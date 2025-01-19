@@ -1,0 +1,12 @@
+{
+  "name": "pub-quiz-script",
+  "version": "1.0.0",
+  "description": "Script for handling pub quiz data",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
