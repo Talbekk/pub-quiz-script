@@ -18,6 +18,15 @@ const connectDB = async () => {
   }
 };
 
+const close = async () => {
+  try {
+    await client.close();
+    console.log("✅ MongoDB connection closed successfully!");
+  } catch (error) {
+    console.error("❌ MongoDB disconnection error:", error);
+  }
+};
+
 const getDB = () => {
   if (!client) {
     throw new Error("MongoDB client is not initialized.");
@@ -25,4 +34,4 @@ const getDB = () => {
   return client.db(process.env.DB_NAME);
 };
 
-export { connectDB, getDB };
+export { connectDB, getDB, close };
