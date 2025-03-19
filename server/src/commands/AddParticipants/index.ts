@@ -2,7 +2,7 @@ import { ulid } from "ulid";
 import { connectDB, getDB } from "../../config/db";
 import groupChat from "../../data/group-chat.json";
 
-type Participant = {
+export type Participant = {
     _id: string;
     full_name: string;
 }
