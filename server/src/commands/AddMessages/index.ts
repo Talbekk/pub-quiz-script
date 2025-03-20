@@ -34,7 +34,7 @@ type LinkMessage = BaseMessage & {
     type: 'link';
 }
 
-type Message = TextMessage | PhotoMessage | LinkMessage;
+export type Message = TextMessage | PhotoMessage | LinkMessage;
 
 const getParticipantRef = (participants: Array<Participant>, senderName: string): Participant['_id'] | null => {
     const result: Participant | undefined = participants.find(participant => participant.full_name === senderName);
