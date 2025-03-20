@@ -22,6 +22,15 @@ type Quiz = {
     entries: Array<Entry>;
     created_at: number;
 }
+
+const getStartDateTime = (startIndex: number, index: number): number => {
+    return QUIZ_START_DATE_TIME + (WEEK_IN_MILLISECONDS * (startIndex + index));
+}
+
+const getEndDateTime = (startIndex: number, index: number): number => {
+    return QUIZ_START_DATE_TIME + (WEEK_IN_MILLISECONDS * (startIndex + index + 1));
+}
+
 const AddQuizzes = async () => {
     await connectDB();
     const db = getDB();
@@ -32,21 +41,20 @@ const AddQuizzes = async () => {
         console.log(`Weeks since start date: `, weeksSinceStartDate);
         const batchSize = 50;
 
-        const processQuizBatch = async (index: number, currentBatchSize: number) => {
-            const currentWeekSinceStart  = index + 1;
+        const processQuizBatch = async (startIndex: number, currentBatchSize: number) => {
             let quizzes: Array<Quiz> = [];
-            for(let i = index ; i < (index + currentBatchSize); i++) {
+            for(let i = 0 ; i < currentBatchSize; i++) {
                 const quiz: Quiz = {
                     _id: ulid(),
-                    start_datetime: QUIZ_START_DATE_TIME + (WEEK_IN_MILLISECONDS * (index + i)),
-                    end_datetime: QUIZ_START_DATE_TIME + (WEEK_IN_MILLISECONDS * (index + i + 1)),
+                    start_datetime: getStartDateTime(startIndex, i),
+                    end_datetime: getEndDateTime(startIndex, i),
                     url: null,
                     entries: [],
                     created_at: Date.now(),
                 };
                 quizzes.push(quiz);
             }
-            // await quizzesCollection.insertMany(quizzes);
+            await quizzesCollection.insertMany(quizzes);
             console.log(`quizzes added: `, quizzes.length);
         }
 
