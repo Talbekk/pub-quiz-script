@@ -1,20 +1,12 @@
 import { Temporal } from "temporal-polyfill";
 import { connectDB, getDB, close  } from "../../config/db";
-import { Message } from "../AddMessages";
 import { ulid } from "ulid";
+import { Entry } from "../AddEntries";
 
 const QUIZ_START_DATE_TIME = 1514764800000;
 const WEEK_IN_MILLISECONDS = 604800000;
 
-type Entry = {
-    _id: string;
-    player_ref: string;
-    score: number | null;
-    messages: Array<Message>;
-    created_at: number;
-}
-
-type Quiz = {
+export type Quiz = {
     _id: string;
     start_datetime: number;
     end_datetime: number;
