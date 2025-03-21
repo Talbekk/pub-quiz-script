@@ -67,6 +67,8 @@ const AddEntries = async () => {
         let count = 0;
         const batchedStream = batch<Quiz>(quizzesCursor, batchSize);
         for await (const currentQuizzes of batchedStream) {
+            console.log(`currentQuizzes: `, currentQuizzes);
+            console.log(`batchedStream: `, batchedStream);
             const quizStartTimes = currentQuizzes.map(quiz => quiz.start_datetime);
             const quizEndTimes = currentQuizzes.map(quiz => quiz.end_datetime);
             const messagesDuringQuizBatch = await messagesCollection.find({
