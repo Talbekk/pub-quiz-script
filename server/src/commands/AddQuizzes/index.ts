@@ -11,7 +11,7 @@ export type Quiz = {
     start_datetime: number;
     end_datetime: number;
     url: string | null;
-    entries: Array<Entry>;
+    entries: Array<Entry['_id']>;
     created_at: number;
 }
 

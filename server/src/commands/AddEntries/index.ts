@@ -48,7 +48,7 @@ const AddEntries = async () => {
                 entries.push(...quizEntries);
                 return {
                     ...quiz,
-                    entries: quizEntries,
+                    entries: quizEntries.map((entry) => entry._id),
                 }
             });
             const bulkUpdate = updatedQuizzes.map((updatedQuiz) => {
@@ -80,7 +80,7 @@ const AddEntries = async () => {
                 progress: `${count}/${total}`,
                 lastId: currentQuizzes[currentQuizzes.length - 1]._id,
             });
-    }
+        }
     } finally {
         await close();
         console.info("Database connection closed");
