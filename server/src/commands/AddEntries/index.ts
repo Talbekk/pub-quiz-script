@@ -76,7 +76,7 @@ const AddEntries = async () => {
             }).toArray();
             await processQuizBatch(currentQuizzes, messagesDuringQuizBatch);
             count += currentQuizzes.length;
-            console.info('Added primary timezone to educator', {
+            console.info('Added Entries', {
                 progress: `${count}/${total}`,
                 lastId: currentQuizzes[currentQuizzes.length - 1]._id,
             });

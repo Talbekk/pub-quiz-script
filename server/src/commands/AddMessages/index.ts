@@ -26,7 +26,7 @@ type PhotoMessage = BaseMessage & {
     type: 'photo';
 }
 
-type LinkMessage = BaseMessage & {
+export type LinkMessage = BaseMessage & {
     share: {
         link: string;
         text: string;
