@@ -1,10 +1,11 @@
 import { connectDB, getDB, close } from "../../config/db";
 import batch from "../Services/BatchStream";
-import { Entry } from "../AddEntries";
+import { Entry, Score } from "../AddEntries";
+import { Message } from "../AddMessages";
 
-const extractAllScores = (message: string): Array<number> => {
-    const matches: Array<RegExpExecArray> = [...message.matchAll(/(?<!\/)\b(1[0-9]|2[0-5]|\d)\b/g)];
-    return matches.map(match => Number(match[0]));
+const extractAllScores = (message: Message): Array<Score> => {
+    const matches: Array<RegExpExecArray> = [...message.content.matchAll(/(?<!\/)\b(1[0-9]|2[0-5]|\d)\b/g)];
+    return matches.map(match => ({ score: Number(match[0]), message_ref: message._id }));
 }
 
 const AddScoreToEntry = async () => {
@@ -18,10 +19,10 @@ const AddScoreToEntry = async () => {
 
         const processEntryBatch = async (entries: Array<Entry>) => {
             const updatedEntries: Array<Entry> = entries.map((entry) => {
-                let scores: Array<number> = [];
+                let scores: Array<Score> = [];
                 entry.messages.map((message) => {
                     if (message.type === 'text') {
-                        const messageScores = extractAllScores(message.content);
+                        const messageScores = extractAllScores(message);
                         scores = [...scores, ...messageScores];
                     }
                 });
@@ -33,8 +34,8 @@ const AddScoreToEntry = async () => {
             });
             const bulkUpdate = updatedEntries.map((updatedEntry) => {
                 const updateData: {
-                    score: number | null;
-                    possible_scores?: Array<number>;
+                    score: Score | null;
+                    possible_scores?: Array<Score>;
                 } = { score: updatedEntry.score };
                 if (updatedEntry.possible_scores) {
                     updateData.possible_scores = updatedEntry.possible_scores;

@@ -5,14 +5,19 @@ import { Quiz } from "../AddQuizzes";
 import { Participant } from "../AddParticipants";
 import batch from "../Services/BatchStream";
 
+export type Score = {
+    score: number;
+    message_ref: Message['_id'];
+}
+
 export type Entry = {
     _id: string;
     player_ref: string;
     quiz_ref: string;
-    score: number | null;
+    score: Score | null;
     messages: Array<Message>;
     created_at: number;
-    possible_scores?: Array<number>;
+    possible_scores?: Array<Score>;
 }
 
 const createEntry = (participantId: Participant['_id'], quizId: Quiz['_id'], messages: Array<Message>): Entry => {
