@@ -10,7 +10,7 @@ export type Quiz = {
     _id: string;
     start_datetime: number;
     end_datetime: number;
-    url: string | null;
+    url: Array<string>;
     entries: Array<Entry['_id']>;
     created_at: number;
 }
@@ -40,7 +40,7 @@ const AddQuizzes = async () => {
                     _id: ulid(),
                     start_datetime: getStartDateTime(startIndex, i),
                     end_datetime: getEndDateTime(startIndex, i),
-                    url: null,
+                    url: [],
                     entries: [],
                     created_at: Date.now(),
                 };
