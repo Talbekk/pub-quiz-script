@@ -12,6 +12,7 @@ export type Entry = {
     score: number | null;
     messages: Array<Message>;
     created_at: number;
+    possible_scores?: Array<number>;
 }
 
 const createEntry = (participantId: Participant['_id'], quizId: Quiz['_id'], messages: Array<Message>): Entry => {
