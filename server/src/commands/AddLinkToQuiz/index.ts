@@ -50,7 +50,7 @@ const AddLinkToQuiz = async () => {
             }).toArray();
             await processQuizBatch(currentQuizzes, entriesDuringQuizBatch);
             count += currentQuizzes.length;
-            console.info('Added primary timezone to educator', {
+            console.info('Added valid links to quizzes', {
                 progress: `${count}/${total}`,
                 lastId: currentQuizzes[currentQuizzes.length - 1]._id,
             });
