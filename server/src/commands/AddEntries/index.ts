@@ -18,6 +18,7 @@ export type Entry = {
     messages: Array<Message>;
     created_at: number;
     possible_scores?: Array<Score>;
+    validated?: boolean;
 }
 
 const createEntry = (participantId: Participant['_id'], quizId: Quiz['_id'], messages: Array<Message>): Entry => {
