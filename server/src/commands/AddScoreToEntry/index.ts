@@ -1,20 +1,28 @@
-import { connectDB, getDB, close } from "../../config/db";
-import batch from "../Services/BatchStream";
-import { Entry, Score } from "../AddEntries";
-import { Message } from "../AddMessages";
+import { connectDB, getDB, close } from '../../config/db';
+import batch from '../Services/BatchStream';
+import { Entry, Score } from '../AddEntries';
+import { Message } from '../AddMessages';
 
 const extractAllScores = (message: Message): Array<Score> => {
-    const matches: Array<RegExpExecArray> = [...message.content.matchAll(/(?<!\/)\b(1[0-9]|2[0-5]|\d)\b/g)];
-    return matches.map(match => ({ score: Number(match[0]), message_ref: message._id }));
-}
+    const matches: Array<RegExpExecArray> = [
+        ...message.content.matchAll(/(?<!\/)\b(1[0-9]|2[0-5]|\d)\b/g),
+    ];
+    return matches.map((match) => ({
+        score: Number(match[0]),
+        message_ref: message._id,
+    }));
+};
 
 const AddScoreToEntry = async () => {
     await connectDB();
     const db = getDB();
     try {
-        const entriesCollection = db.collection<Entry>("entries");
+        const entriesCollection = db.collection<Entry>('entries');
         const total = await entriesCollection.countDocuments();
-        const entriesCursor = entriesCollection.find({}, { sort: [['_id', 1]] });
+        const entriesCursor = entriesCollection.find(
+            {},
+            { sort: [['_id', 1]] },
+        );
         const batchSize = 25;
 
         const processEntryBatch = async (entries: Array<Entry>) => {
@@ -50,7 +58,7 @@ const AddScoreToEntry = async () => {
             await entriesCollection.bulkWrite(bulkUpdate);
             console.log(`updatedEntries updated: `, updatedEntries.length);
             console.log(`bulkUpdate length: `, bulkUpdate.length);
-        }
+        };
 
         let count = 0;
         const batchedStream = batch<Entry>(entriesCursor, batchSize);
@@ -65,8 +73,8 @@ const AddScoreToEntry = async () => {
         }
     } finally {
         await close();
-        console.info("Database connection closed");
+        console.info('Database connection closed');
     }
-}
+};
 
 AddScoreToEntry();
