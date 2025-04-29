@@ -5,9 +5,10 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "scripts": {
-        "dev": "nodemon src/app.ts",
         "build": "tsc",
-        "start": "node dist/app.js"
+        "start": "node dist/server.js",
+        "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+        "lint": "eslint 'src/**/*.ts'"
     },
     "keywords": [],
     "author": "",
@@ -24,6 +25,7 @@
         "@eslint/js": "^9.25.1",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
+        "@types/node": "^22.15.3",
         "eslint": "^9.25.1",
         "nodemon": "^3.1.9",
         "prettier": "3.5.3",
