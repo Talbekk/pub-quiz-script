@@ -5,7 +5,7 @@ import participantRoute from './participant.routes';
 const indexRoute = Router();
 
 indexRoute.get('/', async (req, res) => {
-  res.json({ message: 'Welcome User' });
+    res.json({ message: 'Welcome User' });
 });
 
 indexRoute.use('/participants', participantRoute);
