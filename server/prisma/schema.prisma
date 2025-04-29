@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type EntriesMessages {
+  id              String                  @map("_id")
+  content         String
+  created_at      Float
+  participant_ref String
+  photos          EntriesMessagesPhotos[]
+  share           EntriesMessagesShare?
+  timestamp       Float
+  type            String
+}
+
+type EntriesMessagesPhotos {
+  backup_uri         String
+  creation_timestamp Int
+  uri                String
+}
+
+type EntriesMessagesShare {
+  link       String
+  share_text String?
+}
+
+type EntriesPossibleScores {
+  message_ref String
+  score       Int
+}
+
+type EntriesScore {
+  message_ref String
+  score       Int
+}
+
+type MessagesPhotos {
+  backup_uri         String
+  creation_timestamp Int
+  uri                String
+}
+
+type MessagesShare {
+  link       String
+  share_text String?
+}
+
+model entries {
+  id              String                  @id @map("_id")
+  created_at      Float
+  messages        EntriesMessages[]
+  player_ref      String
+  possible_scores EntriesPossibleScores[]
+  quiz_ref        String
+  score           EntriesScore?
+  validated       Boolean
+}
+
+model messages {
+  id              String           @id @map("_id")
+  content         String
+  created_at      Float
+  participant_ref String?
+  photos          MessagesPhotos[]
+  share           MessagesShare?
+  timestamp       Float
+  type            String
+}
+
+model participants {
+  id        String @id @map("_id")
+  full_name String
+}
+
+model quizzes {
+  id             String   @id @map("_id")
+  created_at     Float
+  end_datetime   Float
+  entries        String[]
+  start_datetime Float
+  url            String[]
+}
