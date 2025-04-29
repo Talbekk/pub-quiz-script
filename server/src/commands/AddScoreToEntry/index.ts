@@ -37,6 +37,7 @@ const AddScoreToEntry = async () => {
                 return {
                     ...entry,
                     score: scores.length === 1 ? scores[0] : null,
+                    validated: scores.length === 1 ? true : false,
                     ...(scores.length > 1 ? { possible_scores: scores } : {}),
                 };
             });

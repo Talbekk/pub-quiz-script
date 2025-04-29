@@ -17,6 +17,7 @@ export type Entry = {
     score: Score | null;
     messages: Array<Message>;
     created_at: number;
+    validated: boolean;
     possible_scores?: Array<Score>;
 };
 
@@ -35,6 +36,7 @@ const createEntry = (
         score: null,
         messages: participantMessages,
         created_at: Date.now(),
+        validated: false,
     };
 };
 
