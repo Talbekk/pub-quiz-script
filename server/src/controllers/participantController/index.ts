@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../../client';
 
-// Get all participants
-
 export const getParticipants = async (req: Request, res: Response) => {
     const participants = await prisma.participants.findMany();
     res.json({
@@ -12,7 +10,6 @@ export const getParticipants = async (req: Request, res: Response) => {
     });
 };
 
-// Get a single user
 export const getParticipant = async (req: Request, res: Response) => {
     const { userid } = req.params;
     const particpant = await prisma.participants.findFirst({
