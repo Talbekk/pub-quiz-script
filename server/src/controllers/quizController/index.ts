@@ -11,10 +11,10 @@ export const getQuizzes = async (req: Request, res: Response) => {
 };
 
 export const getQuiz = async (req: Request, res: Response) => {
-    const { userid } = req.params;
+    const { quizid } = req.params;
     const quiz = await prisma.quizzes.findFirst({
         where: {
-            id: userid,
+            id: quizid,
         },
     });
     res.json({
@@ -23,3 +23,19 @@ export const getQuiz = async (req: Request, res: Response) => {
         data: quiz,
     });
 };
+
+export const updateQuiz = async (req: Request, res: Response) => {
+    const { quizid } = req.params;
+    const updatedData = req.body;
+    
+    const quiz = await prisma.quizzes.update({
+        where: { id: quizid },
+        data: updatedData,
+    });
+    
+    res.json({
+        status: true,
+        message: 'Quiz Successfully updated',
+        data: quiz,
+    });
+}
