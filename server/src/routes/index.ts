@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import participantRoute from './participant.routes';
+import participantRoute from './participants';
 
 // Index
 const indexRoute = Router();
