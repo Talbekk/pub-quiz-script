@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '../client';
+import prisma from '../../client';
 
 // Get all participants
 

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
     getParticipant,
     getParticipants,
-} from '../controllers/participant.controller';
+} from '../controllers/participantController';
 
 const participantRoute = Router();
 participantRoute.get('', getParticipants);
