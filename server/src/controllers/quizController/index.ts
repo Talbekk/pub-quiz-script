@@ -2,11 +2,34 @@ import { Request, Response } from 'express';
 import prisma from '../../client';
 
 export const getQuizzes = async (req: Request, res: Response) => {
-    const quizzes = await prisma.quizzes.findMany();
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.max(1, Number(req.query.limit) || 10);
+    const startIndex = (page - 1) * limit;
+
+    const [quizCount, quizzes] = await prisma.$transaction([
+        prisma.quizzes.count(),
+        prisma.quizzes.findMany({
+            skip: startIndex,
+            take: limit,
+        }),
+    ]);
+
     res.json({
         status: true,
         message: 'Quizzes Successfully fetched',
         data: quizzes,
+        ...(startIndex + limit < quizCount && {
+            next: {
+                page: page + 1,
+                limit: limit,
+            },
+        }),
+        ...(startIndex > 0 && {
+            previous: {
+                page: page - 1,
+                limit: limit,
+            },
+        }),
     });
 };
 
