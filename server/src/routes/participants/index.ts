@@ -5,6 +5,6 @@ import {
 } from '../../controllers/participantController';
 
 const participantRoute = Router();
-participantRoute.get('', getParticipants);
+participantRoute.get('/', getParticipants);
 participantRoute.get('/:userid', getParticipant);
 export default participantRoute;
