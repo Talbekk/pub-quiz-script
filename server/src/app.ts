@@ -11,6 +11,6 @@ connectDB();
 app.use(errorHandler);
 app.use(cors());
 app.use(express.json());
-app.use('/', indexRoute); // Use the indexRoute for the root path
+app.use('/', indexRoute);
 
 export default app;
