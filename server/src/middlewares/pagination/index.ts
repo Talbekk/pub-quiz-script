@@ -16,16 +16,18 @@ export function pagination(defaultLimit = 10, maxLimit = 100) {
   };
 }
 
+export interface RequestPagination {
+    skip: number;
+    take: number;
+    page: number;
+    limit: number;
+}
+
 // types/express/index.d.ts
 declare global {
   namespace Express {
     interface Request {
-      pagination?: {
-        skip: number;
-        take: number;
-        page: number;
-        limit: number;
-      };
+      pagination?: RequestPagination;
     }
   }
 }
