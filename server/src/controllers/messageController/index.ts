@@ -2,29 +2,26 @@ import { Request, Response } from 'express';
 import prisma from '../../client';
 
 export const getMessages = async (req: Request, res: Response) => {
-    const page = Math.max(1, Number(req.query.page) || 1);
-    const limit = Math.max(1, Number(req.query.limit) || 10);
-    const startIndex = (page - 1) * limit;
+    const {skip, take, page, limit} = req.pagination!;
 
     const [messageCount, messages] = await prisma.$transaction([
         prisma.messages.count(),
         prisma.messages.findMany({
-            skip: startIndex,
-            take: limit,
+            skip,
+            take,
         }),
     ]);
-
     res.json({
         status: true,
         message: 'Messages Successfully fetched',
         data: messages,
-        ...(startIndex + limit < messageCount && {
+        ...(skip + take < messageCount && {
             next: {
                 page: page + 1,
                 limit: limit,
             },
         }),
-        ...(startIndex > 0 && {
+        ...(skip > 0 && {
             previous: {
                 page: page - 1,
                 limit: limit,
