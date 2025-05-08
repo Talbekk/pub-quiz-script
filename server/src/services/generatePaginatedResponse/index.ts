@@ -1,4 +1,4 @@
-import { RequestPagination } from "../../middlewares/pagination";
+import { RequestPagination } from '../../middlewares/pagination';
 
 export interface PaginationInfo {
     page: number;
@@ -14,19 +14,23 @@ export interface PaginatedResponse<T> {
 }
 
 interface GeneratePaginatedResponseProps<T> {
-    status: boolean,
-    message: string,
-    data: T[],
-    collectionCount: number,
-    requestPagination: RequestPagination
+    status: boolean;
+    message: string;
+    data: T[];
+    collectionCount: number;
+    requestPagination: RequestPagination;
 }
 
-export const generatePaginatedResponse = <T>(
-    { status, message, data, collectionCount, requestPagination }: GeneratePaginatedResponseProps<T>
-): PaginatedResponse<T> => {
+export const generatePaginatedResponse = <T>({
+    status,
+    message,
+    data,
+    collectionCount,
+    requestPagination,
+}: GeneratePaginatedResponseProps<T>): PaginatedResponse<T> => {
     const { skip, take, page, limit } = requestPagination;
     return {
-       status,
+        status,
         message,
         data,
         ...(skip + take < collectionCount && {

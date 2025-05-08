@@ -12,11 +12,11 @@ export const getEntries = async (req: Request, res: Response) => {
         }),
     ]);
     const response = generatePaginatedResponse({
-        status: true, 
-        message: 'Entries Successfully fetched', 
-        data: entries, 
-        collectionCount: entryCount, 
-        requestPagination: req.pagination!
+        status: true,
+        message: 'Entries Successfully fetched',
+        data: entries,
+        collectionCount: entryCount,
+        requestPagination: req.pagination!,
     });
     res.json(response);
 };

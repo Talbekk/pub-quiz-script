@@ -12,11 +12,11 @@ export const getMessages = async (req: Request, res: Response) => {
         }),
     ]);
     const response = generatePaginatedResponse({
-        status: true, 
-        message: 'Messages Successfully fetched', 
-        data: messages, 
-        collectionCount: messageCount, 
-        requestPagination: req.pagination!
+        status: true,
+        message: 'Messages Successfully fetched',
+        data: messages,
+        collectionCount: messageCount,
+        requestPagination: req.pagination!,
     });
     res.json(response);
 };

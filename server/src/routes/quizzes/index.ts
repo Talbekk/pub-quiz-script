@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { getQuizzes, getQuiz, updateQuiz } from '../../controllers/quizController';
+import {
+    getQuizzes,
+    getQuiz,
+    updateQuiz,
+} from '../../controllers/quizController';
 
 const quizRoute = Router();
 quizRoute.get('/', getQuizzes);
