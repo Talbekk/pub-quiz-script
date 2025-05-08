@@ -1,16 +1,10 @@
 import { Request, Response } from 'express';
 import prisma from '../../client';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
+import { getPaginatedEntries } from '../../services/entryService';
 
 export const getEntries = async (req: Request, res: Response) => {
-    const { skip, take } = req.pagination!;
-    const [entryCount, entries] = await prisma.$transaction([
-        prisma.entries.count(),
-        prisma.entries.findMany({
-            skip,
-            take,
-        }),
-    ]);
+    const { entryCount, entries } = await getPaginatedEntries(req.pagination!);
     const response = generatePaginatedResponse({
         status: true,
         message: 'Entries Successfully fetched',
