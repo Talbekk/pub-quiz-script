@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import prisma from '../../client';
+import { getAllParticipants, getParticipantByID } from '../../services/participantService';
 
 export const getParticipants = async (req: Request, res: Response) => {
-    const participants = await prisma.participants.findMany();
+    const participants = await getAllParticipants();
     res.json({
         status: true,
         message: 'Participants Successfully fetched',
@@ -12,14 +12,10 @@ export const getParticipants = async (req: Request, res: Response) => {
 
 export const getParticipant = async (req: Request, res: Response) => {
     const { userid } = req.params;
-    const particpant = await prisma.participants.findFirst({
-        where: {
-            id: userid,
-        },
-    });
+    const participant = await getParticipantByID(userid);
     res.json({
         status: true,
         message: 'Participant Successfully fetched',
-        data: particpant,
+        data: participant,
     });
 };
