@@ -12,3 +12,15 @@ export const getPaginatedEntries = async (requestPagination: RequestPagination) 
     ]);
     return { entryCount, entries };
 }
+
+export const getEntryByID = async (entryid: string) => {
+    const entry = await prisma.entries.findFirst({
+        where: {
+            id: entryid,
+        },
+    });
+    if (!entry) {
+        throw new Error('Entry not found');
+    }
+    return entry;
+};
