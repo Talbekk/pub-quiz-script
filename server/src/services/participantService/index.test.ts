@@ -19,7 +19,7 @@ describe('participantService:', () => {
         expect(participants[0]).toHaveProperty('full_name', 'Alice');
     });
 
-    test('getParticipant should return a participant by ID', async () => {
+    test('getParticipantByID should return a participant by ID', async () => {
         const userid = 'some-unique-id';
         prisma.participants.findFirst.mockResolvedValue({ id: userid, full_name: 'John Doe' });
 
