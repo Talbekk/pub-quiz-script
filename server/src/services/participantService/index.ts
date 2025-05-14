@@ -11,8 +11,8 @@ export const getParticipantByID = async (userid: string) => {
             id: userid,
         },
     });
-    // if (!participant) {
-    //     throw new Error('Participant not found');
-    // }
+    if (!participant) {
+        throw new Error('Participant not found');
+    }
     return participant;
 };

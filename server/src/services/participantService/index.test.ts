@@ -1,5 +1,5 @@
 import prisma from '../../test_utils/__mocks__/prisma';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getAllParticipants, getParticipantByID } from '.';
 
 vi.mock('../../client', () => ({
@@ -7,7 +7,7 @@ vi.mock('../../client', () => ({
 }));
 
 describe('participantService:', () => {
-    test('getParticipants should return a list of participants', async () => {
+    it('getParticipants should return a list of participants', async () => {
         prisma.participants.findMany.mockResolvedValue([
             { id: '1', full_name: 'Alice' },
             { id: '2', full_name: 'Bob' },
@@ -19,7 +19,7 @@ describe('participantService:', () => {
         expect(participants[0]).toHaveProperty('full_name', 'Alice');
     });
 
-    test('getParticipantByID should return a participant by ID', async () => {
+    it('getParticipantByID should return a participant by ID', async () => {
         const userid = 'some-unique-id';
         prisma.participants.findFirst.mockResolvedValue({ id: userid, full_name: 'John Doe' });
 
