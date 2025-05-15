@@ -7,33 +7,41 @@ vi.mock('../../client', () => ({
 }));
 
 describe('participantService:', () => {
-    
-    it('getParticipants should return a list of participants', async () => {
-        prisma.participants.findMany.mockResolvedValue([
-            { id: '1', full_name: 'Alice' },
-            { id: '2', full_name: 'Bob' },
-        ]);
 
-        const participants = await getAllParticipants();
-        expect(participants).toBeInstanceOf(Array);
-        expect(participants.length).toBe(2);
-        expect(participants[0]).toHaveProperty('full_name', 'Alice');
+    describe('getAllParticipants', () => {
+
+        it('getParticipants should return a list of participants', async () => {
+            prisma.participants.findMany.mockResolvedValue([
+                { id: '1', full_name: 'Bruce Wayne' },
+                { id: '2', full_name: 'James Bond' },
+            ]);
+
+            const participants = await getAllParticipants();
+            expect(participants).toBeInstanceOf(Array);
+            expect(participants.length).toBe(2);
+            expect(participants[0]).toHaveProperty('full_name', 'Bruce Wayne');
+            expect(participants[1]).toHaveProperty('full_name', 'James Bond');
+        });
     });
 
-    it('getParticipantByID should return a participant by ID', async () => {
-        const userid = 'some-unique-id';
-        prisma.participants.findFirst.mockResolvedValue({ id: userid, full_name: 'John Doe' });
+    describe('getParticipantByID', () => {
 
-        const participant = await getParticipantByID(userid);
-        expect(participant).toBeDefined();
-        expect(participant).toHaveProperty('id', userid);
-        expect(participant).toHaveProperty('full_name', 'John Doe');
-    });
+        it('getParticipantByID should return a participant by ID', async () => {
+            const userid = 'some-unique-id';
+            prisma.participants.findFirst.mockResolvedValue({ id: userid, full_name: 'John Constantine' });
 
-    it('getParticipantByID should throw an error if participant is not found', async () => {
-        const userid = 'non-existent-id';
-        prisma.participants.findFirst.mockResolvedValue(null);
-        await expect(getParticipantByID(userid)).rejects.toThrow('Participant not found');
+            const participant = await getParticipantByID(userid);
+            expect(participant).toBeDefined();
+            expect(participant).toHaveProperty('id', userid);
+            expect(participant).toHaveProperty('full_name', 'John Constantine');
+        });
+
+        it('getParticipantByID should throw an error if participant is not found', async () => {
+            const userid = 'non-existent-id';
+            prisma.participants.findFirst.mockResolvedValue(null);
+            await expect(getParticipantByID(userid)).rejects.toThrow('Participant not found');
+        });
+
     });
 
 });
