@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export function pagination(defaultLimit = 10, maxLimit = 100) {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: Request, _: Response, next: NextFunction) => {
         const page = parseInt(req.query.page as string) || 1;
         const limit = Math.min(
             parseInt(req.query.limit as string) || defaultLimit,
