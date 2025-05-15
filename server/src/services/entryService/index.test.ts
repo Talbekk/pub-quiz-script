@@ -9,6 +9,7 @@ vi.mock('../../client', () => ({
 }));
 
 describe('getPaginatedEntries', () => {
+    
     it('should return paginated entries with the correct count', async () => {
         prisma.entries.count.mockResolvedValue(50);
         prisma.entries.findMany.mockResolvedValue(mockEntries);
@@ -43,5 +44,12 @@ describe('getPaginatedEntries', () => {
         expect(entry).toHaveProperty('id', entryid);
         expect(entry).toHaveProperty('player_ref', mockEntry1.player_ref);
         expect(entry).toHaveProperty('quiz_ref', mockEntry1.quiz_ref);
+    });
+
+    it('getEntryByID should throw an error if entry is not found', async () => {
+        const entryid = "non-existent-id";
+        prisma.entries.findFirst.mockResolvedValue(null);
+
+        await expect(getEntryByID(entryid)).rejects.toThrow('Entry not found');
     });
 });

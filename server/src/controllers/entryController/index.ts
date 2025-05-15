@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import prisma from '../../client';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
-import { getPaginatedEntries } from '../../services/entryService';
+import { getEntryByID, getPaginatedEntries } from '../../services/entryService';
 
 export const getEntries = async (req: Request, res: Response) => {
     const { entryCount, entries } = await getPaginatedEntries(req.pagination!);
@@ -17,11 +16,7 @@ export const getEntries = async (req: Request, res: Response) => {
 
 export const getEntry = async (req: Request, res: Response) => {
     const { entryid } = req.params;
-    const entry = await prisma.entries.findFirst({
-        where: {
-            id: entryid,
-        },
-    });
+    const entry = await getEntryByID(entryid);
     res.json({
         status: true,
         message: 'Entry Successfully fetched',

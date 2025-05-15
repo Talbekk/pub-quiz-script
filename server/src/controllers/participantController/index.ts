@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAllParticipants, getParticipantByID } from '../../services/participantService';
 
-export const getParticipants = async (req: Request, res: Response) => {
+export const getParticipants = async (_: Request, res: Response) => {
     const participants = await getAllParticipants();
     res.json({
         status: true,

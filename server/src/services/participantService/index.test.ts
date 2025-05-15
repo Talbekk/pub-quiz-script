@@ -7,6 +7,7 @@ vi.mock('../../client', () => ({
 }));
 
 describe('participantService:', () => {
+    
     it('getParticipants should return a list of participants', async () => {
         prisma.participants.findMany.mockResolvedValue([
             { id: '1', full_name: 'Alice' },
@@ -28,4 +29,11 @@ describe('participantService:', () => {
         expect(participant).toHaveProperty('id', userid);
         expect(participant).toHaveProperty('full_name', 'John Doe');
     });
+
+    it('getParticipantByID should throw an error if participant is not found', async () => {
+        const userid = 'non-existent-id';
+        prisma.participants.findFirst.mockResolvedValue(null);
+        await expect(getParticipantByID(userid)).rejects.toThrow('Participant not found');
+    });
+
 });
