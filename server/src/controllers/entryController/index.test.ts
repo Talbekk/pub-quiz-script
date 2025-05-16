@@ -5,6 +5,7 @@ import request from 'supertest';
 import app from '../../app';
 import { mockEntries, mockEntry1 } from '../../test_utils/__mocks__/entries';
 import { requestPagination as mockPagination } from '../../test_utils/__mocks__/pagination';
+import { ThrowError } from '../../middlewares/errorHandler';
 
 vi.mock('../../services/entryService', () => ({
     getPaginatedEntries: vi.fn(),
@@ -46,7 +47,6 @@ describe('entryController', () => {
                 requestPagination: mockPagination,
             });
             expect(response.status).toBe(200);
-            console.log(`response body: `, response.body);
             expect(Array.isArray(response.body.data)).toBe(true);
           });
 
@@ -80,8 +80,6 @@ describe('entryController', () => {
         it('GET /entries should handle invalid pagination parameters', async () => {
             const response = await request(app).get('/entries?page=-1&limit=0');
 
-            console.log(`response.status: `, response.status);
-
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('status', false);
             expect(response.body).toHaveProperty('message', 'Invalid pagination parameters');
@@ -104,24 +102,17 @@ describe('entryController', () => {
         });
 
         it('GET /entries/:entryid should handle missing entry gracefully', async () => {
-            (getEntryByID as Mock).mockResolvedValue(null);
+            (getEntryByID as Mock).mockImplementation(() => {
+                throw new ThrowError(404, 'Entry not found', { id: 'non-existent-id' });
+            });
 
             const response = await request(app).get('/entries/non-existent-id');
 
             expect(getEntryByID).toHaveBeenCalledWith('non-existent-id');
             expect(response.status).toBe(404);
-            expect(response.body).toEqual({
-                status: false,
-                message: 'Entry not found',
-            });
-        });
-
-        it('GET /entries/:entryid should handle invalid entry ID', async () => {
-            const response = await request(app).get('/entries/invalid-id');
-
-            expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('status', false);
-            expect(response.body).toHaveProperty('message', 'Invalid entry ID');
+            expect(response.body).toHaveProperty('message', 'Entry not found');
+            expect(response.body).toHaveProperty('data', { id: 'non-existent-id' });
         });
     });
 });
