@@ -1,5 +1,6 @@
 import prisma from "../../client";
 import { RequestPagination } from "../../middlewares/pagination";
+import { ThrowError } from "../../middlewares/errorHandler";
 
 export const getPaginatedEntries = async (requestPagination: RequestPagination) => {
     const { skip, take } = requestPagination;
@@ -20,7 +21,7 @@ export const getEntryByID = async (entryid: string) => {
         },
     });
     if (!entry) {
-        throw new Error('Entry not found');
+        throw new ThrowError(404, 'Entry not found', { id: entryid });
     }
     return entry;
 };
