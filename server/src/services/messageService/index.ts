@@ -1,4 +1,5 @@
 import prisma from "../../client";
+import { ThrowError } from "../../middlewares/errorHandler";
 import { RequestPagination } from "../../middlewares/pagination";
 
 export const getPaginatedMessages = async (requestPagination: RequestPagination) => {
@@ -20,7 +21,7 @@ export const getMessageByID = async (messageid: string) => {
         },
     });
     if (!message) {
-        throw new Error('Message not found');
+        throw new ThrowError(404, 'Message not found', { id: messageid });
     }
     return message;
 };
