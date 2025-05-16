@@ -5,9 +5,9 @@ import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 
-app.use(errorHandler);
 app.use(cors());
 app.use(express.json());
 app.use('/', indexRoute);
+app.use(errorHandler);
 
 export default app;
