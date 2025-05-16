@@ -24,11 +24,13 @@ export const errorHandler = (
             message: err.message,
             data: err.data,
         });
+    } else {
+        // Handle unexpected errors
+        res.status(500).json({
+            status: false,
+            message: err?.message || 'Internal Server Error',
+            data: {},
+        });
     }
-    // Handle unexpected errors
-    res.status(500).json({
-        status: false,
-        message: err?.message || 'Internal Server Error',
-        data: {},
-    });
+
 };
