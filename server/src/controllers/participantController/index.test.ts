@@ -84,10 +84,12 @@ describe('Participant Controller', () => {
                 data: { id: '999' },
             };
 
+            const mockError = new ThrowError(404, 'Participant not found', {
+                id: '999',
+            });
+
             const mockGetParticipantByID = vi.fn().mockImplementation(() => {
-                throw new ThrowError(404, 'Participant not found', {
-                    id: '999',
-                });
+                throw mockError;
             });
             (getParticipantByID as Mock) = mockGetParticipantByID;
             const response = await request(app).get('/participants/999');
