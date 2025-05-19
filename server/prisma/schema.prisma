@@ -86,3 +86,10 @@ model quizzes {
   start_datetime Float
   url            String[]
 }
+
+model users {
+    id          String   @id @map("_id")
+    username    String   @unique
+    password    String
+    role        String   @default("user")
+}
