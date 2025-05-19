@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { generatePaginatedResponse, PaginatedResponse } from '.';
 
 describe('generatePaginatedResponse', () => {
-
     it('should generate a response with next and previous pagination info', () => {
         const result = generatePaginatedResponse({
             status: true,
@@ -90,5 +89,4 @@ describe('generatePaginatedResponse', () => {
             data: [{ id: 1 }, { id: 2 }],
         });
     });
-    
 });

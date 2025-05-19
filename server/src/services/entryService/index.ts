@@ -1,8 +1,10 @@
-import prisma from "../../client";
-import { RequestPagination } from "../../middlewares/pagination";
-import { ThrowError } from "../../middlewares/errorHandler";
+import prisma from '../../client';
+import { RequestPagination } from '../../middlewares/pagination';
+import { ThrowError } from '../../middlewares/errorHandler';
 
-export const getPaginatedEntries = async (requestPagination: RequestPagination) => {
+export const getPaginatedEntries = async (
+    requestPagination: RequestPagination,
+) => {
     const { skip, take } = requestPagination;
     const [entryCount, entries] = await prisma.$transaction([
         prisma.entries.count(),
@@ -12,7 +14,7 @@ export const getPaginatedEntries = async (requestPagination: RequestPagination) 
         }),
     ]);
     return { entryCount, entries };
-}
+};
 
 export const getEntryByID = async (entryid: string) => {
     const entry = await prisma.entries.findFirst({

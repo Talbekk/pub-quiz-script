@@ -2,9 +2,15 @@ import { NextFunction, Request, Response } from 'express';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 import { getEntryByID, getPaginatedEntries } from '../../services/entryService';
 
-export const getEntries = async (req: Request, res: Response, next: NextFunction) => {
+export const getEntries = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
-        const { entryCount, entries } = await getPaginatedEntries(req.pagination!);
+        const { entryCount, entries } = await getPaginatedEntries(
+            req.pagination!,
+        );
         const response = generatePaginatedResponse({
             status: true,
             message: 'Entries Successfully fetched',
@@ -18,7 +24,11 @@ export const getEntries = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-export const getEntry = async (req: Request, res: Response, next: NextFunction) => {
+export const getEntry = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const { entryid } = req.params;
         const entry = await getEntryByID(entryid);

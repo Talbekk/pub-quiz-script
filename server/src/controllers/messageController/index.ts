@@ -1,10 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
-import { getMessageByID, getPaginatedMessages } from '../../services/messageService';
+import {
+    getMessageByID,
+    getPaginatedMessages,
+} from '../../services/messageService';
 
-export const getMessages = async (req: Request, res: Response, next: NextFunction) => {
+export const getMessages = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
-        const { messageCount, messages } = await getPaginatedMessages(req.pagination!);
+        const { messageCount, messages } = await getPaginatedMessages(
+            req.pagination!,
+        );
         const response = generatePaginatedResponse({
             status: true,
             message: 'Messages Successfully fetched',
@@ -18,7 +27,11 @@ export const getMessages = async (req: Request, res: Response, next: NextFunctio
     }
 };
 
-export const getMessage = async (req: Request, res: Response, next: NextFunction) => {
+export const getMessage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     const { messageid } = req.params;
     try {
         const message = await getMessageByID(messageid);

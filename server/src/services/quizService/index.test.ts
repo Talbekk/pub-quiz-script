@@ -8,9 +8,7 @@ vi.mock('../../client', () => ({
 }));
 
 describe('quizService:', () => {
-
     describe('getAllQuizzes', () => {
-
         it('getAllQuizzes should return a list of quizzes', async () => {
             prisma.quizzes.findMany.mockResolvedValue(mockQuizzes);
 
@@ -23,10 +21,16 @@ describe('quizService:', () => {
     });
 
     describe('getQuizByID', () => {
-
         it('getQuizByID should return a quiz by ID', async () => {
             const quizid = 'some-unique-id';
-            prisma.quizzes.findFirst.mockResolvedValue({ id: quizid, created_at: 1234567890, start_datetime: 1234567890, end_datetime: 1234567891, entries: [], url: [] });
+            prisma.quizzes.findFirst.mockResolvedValue({
+                id: quizid,
+                created_at: 1234567890,
+                start_datetime: 1234567890,
+                end_datetime: 1234567891,
+                entries: [],
+                url: [],
+            });
 
             const quiz = await getQuizByID(quizid);
             expect(quiz).toBeDefined();
@@ -43,7 +47,5 @@ describe('quizService:', () => {
             prisma.quizzes.findFirst.mockResolvedValue(null);
             await expect(getQuizByID(quizid)).rejects.toThrow('Quiz not found');
         });
-
     });
-
 });

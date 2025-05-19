@@ -10,7 +10,10 @@ export function pagination(defaultLimit = 10, maxLimit = 100) {
         );
 
         if (page < 1 || limit < 1) {
-            throw new ThrowError(400, 'Invalid pagination parameters', { page, limit });
+            throw new ThrowError(400, 'Invalid pagination parameters', {
+                page,
+                limit,
+            });
         }
 
         req.pagination = {

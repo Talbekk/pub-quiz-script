@@ -9,9 +9,7 @@ vi.mock('../../client', () => ({
 }));
 
 describe('entryService', () => {
-
     describe('getPaginatedEntries', () => {
-
         it('should return paginated entries with the correct count', async () => {
             prisma.entries.count.mockResolvedValue(50);
             prisma.entries.findMany.mockResolvedValue(mockEntries);
@@ -39,9 +37,8 @@ describe('entryService', () => {
     });
 
     describe('getEntryByID', () => {
-
         it('getEntryByID should return an entry by ID', async () => {
-            const entryid = "1";
+            const entryid = '1';
             prisma.entries.findFirst.mockResolvedValue(mockEntry1);
 
             const entry = await getEntryByID(entryid);
@@ -52,12 +49,12 @@ describe('entryService', () => {
         });
 
         it('getEntryByID should throw an error if entry is not found', async () => {
-            const entryid = "non-existent-id";
+            const entryid = 'non-existent-id';
             prisma.entries.findFirst.mockResolvedValue(null);
 
-            await expect(getEntryByID(entryid)).rejects.toThrow('Entry not found');
+            await expect(getEntryByID(entryid)).rejects.toThrow(
+                'Entry not found',
+            );
         });
-
     });
-    
 });

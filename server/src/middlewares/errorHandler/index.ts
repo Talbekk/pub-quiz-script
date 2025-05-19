@@ -4,7 +4,11 @@ export class ThrowError extends Error {
     statusCode: number;
     data: { [key: string]: any };
 
-    constructor(statusCode: number, message: string, data: { [key: string]: any } = {}) {
+    constructor(
+        statusCode: number,
+        message: string,
+        data: { [key: string]: any } = {},
+    ) {
         super(message);
         this.statusCode = statusCode;
         this.data = data;
@@ -32,5 +36,4 @@ export const errorHandler = (
             data: {},
         });
     }
-
 };

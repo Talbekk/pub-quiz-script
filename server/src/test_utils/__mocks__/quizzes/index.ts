@@ -4,7 +4,7 @@ export const mockQuiz1 = {
     start_datetime: 1234567890,
     end_datetime: 1234567891,
     entries: [],
-    url: []
+    url: [],
 };
 
 export const mockQuiz2 = {
@@ -13,10 +13,7 @@ export const mockQuiz2 = {
     start_datetime: 1234567890,
     end_datetime: 1234567891,
     entries: [],
-    url: []
+    url: [],
 };
 
-export const mockQuizzes = [
-    mockQuiz1,
-    mockQuiz2,
-];
+export const mockQuizzes = [mockQuiz1, mockQuiz2];

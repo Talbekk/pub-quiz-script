@@ -2,16 +2,17 @@ import prisma from '../../test_utils/__mocks__/prisma';
 import { describe, it, expect, vi } from 'vitest';
 import { getMessageByID, getPaginatedMessages } from '.';
 import { requestPagination } from '../../test_utils/__mocks__/pagination';
-import { mockMessages, mockTextMessage } from '../../test_utils/__mocks__/messages';
+import {
+    mockMessages,
+    mockTextMessage,
+} from '../../test_utils/__mocks__/messages';
 
 vi.mock('../../client', () => ({
     default: prisma,
 }));
 
 describe('messageService', () => {
-
     describe('getPaginatedMessages', () => {
-
         it('should return paginated messages with the correct count', async () => {
             prisma.messages.count.mockResolvedValue(50);
             prisma.messages.findMany.mockResolvedValue(mockMessages);
@@ -38,25 +39,27 @@ describe('messageService', () => {
         });
     });
     describe('getMessageByID', () => {
-
         it('getMessageByID should return a message by ID', async () => {
-            const messageid = "1";
+            const messageid = '1';
             prisma.messages.findFirst.mockResolvedValue(mockTextMessage);
 
             const message = await getMessageByID(messageid);
             expect(message).toBeDefined();
             expect(message).toHaveProperty('id', messageid);
-            expect(message).toHaveProperty('participant_ref', mockTextMessage.participant_ref);
+            expect(message).toHaveProperty(
+                'participant_ref',
+                mockTextMessage.participant_ref,
+            );
             expect(message).toHaveProperty('content', mockTextMessage.content);
         });
 
         it('getMessageByID should throw an error if message is not found', async () => {
-            const messageid = "non-existent-id";
+            const messageid = 'non-existent-id';
             prisma.messages.findFirst.mockResolvedValue(null);
 
-            await expect(getMessageByID(messageid)).rejects.toThrow('Message not found');
+            await expect(getMessageByID(messageid)).rejects.toThrow(
+                'Message not found',
+            );
         });
-
     });
-    
 });

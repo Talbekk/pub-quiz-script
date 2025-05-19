@@ -22,7 +22,6 @@ beforeEach(() => {
 
 describe('entryController', () => {
     describe('getEntries', () => {
-
         it('GET /entries should return a list of entries', async () => {
             const mockResponse = {
                 status: true,
@@ -48,7 +47,7 @@ describe('entryController', () => {
             });
             expect(response.status).toBe(200);
             expect(Array.isArray(response.body.data)).toBe(true);
-          });
+        });
 
         it('GET /entries should handle empty results gracefully', async () => {
             const mockResponse = {
@@ -82,7 +81,10 @@ describe('entryController', () => {
 
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('status', false);
-            expect(response.body).toHaveProperty('message', 'Invalid pagination parameters');
+            expect(response.body).toHaveProperty(
+                'message',
+                'Invalid pagination parameters',
+            );
         });
     });
 
@@ -103,7 +105,9 @@ describe('entryController', () => {
 
         it('GET /entries/:entryid should handle missing entry gracefully', async () => {
             (getEntryByID as Mock).mockImplementation(() => {
-                throw new ThrowError(404, 'Entry not found', { id: 'non-existent-id' });
+                throw new ThrowError(404, 'Entry not found', {
+                    id: 'non-existent-id',
+                });
             });
 
             const response = await request(app).get('/entries/non-existent-id');
@@ -112,7 +116,9 @@ describe('entryController', () => {
             expect(response.status).toBe(404);
             expect(response.body).toHaveProperty('status', false);
             expect(response.body).toHaveProperty('message', 'Entry not found');
-            expect(response.body).toHaveProperty('data', { id: 'non-existent-id' });
+            expect(response.body).toHaveProperty('data', {
+                id: 'non-existent-id',
+            });
         });
     });
 });

@@ -4,7 +4,7 @@ export const mockTextMessage = {
     type: 'text',
     created_at: 1234567890,
     participant_ref: 'participant1',
-    content: "20",
+    content: '20',
     photos: [],
     share: null,
 };
@@ -15,12 +15,9 @@ export const mockImageMessage = {
     type: 'image',
     created_at: 1234567891,
     participant_ref: 'participant2',
-    content: "20",
+    content: '20',
     photos: [],
     share: null,
 };
 
-export const mockMessages = [
-    mockTextMessage,
-    mockImageMessage,
-];
+export const mockMessages = [mockTextMessage, mockImageMessage];

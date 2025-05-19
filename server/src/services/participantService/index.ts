@@ -1,4 +1,5 @@
-import prisma from "../../client";
+import prisma from '../../client';
+import { ThrowError } from '../../middlewares/errorHandler';
 
 export const getAllParticipants = async () => {
     const participants = await prisma.participants.findMany();
@@ -12,7 +13,7 @@ export const getParticipantByID = async (userid: string) => {
         },
     });
     if (!participant) {
-        throw new Error('Participant not found');
+        throw new ThrowError(404, 'Participant not found', { id: userid });
     }
     return participant;
 };

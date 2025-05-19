@@ -1,4 +1,4 @@
-import prisma from "../../client";
+import prisma from '../../client';
 
 export const getAllQuizzes = async () => {
     const quizzes = await prisma.quizzes.findMany();
