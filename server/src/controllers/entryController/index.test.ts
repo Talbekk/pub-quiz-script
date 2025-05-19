@@ -46,7 +46,7 @@ describe('entryController', () => {
                 requestPagination: mockPagination,
             });
             expect(response.status).toBe(200);
-            expect(Array.isArray(response.body.data)).toBe(true);
+            expect(response.body).toEqual(mockResponse);
         });
 
         it('GET /entries should handle empty results gracefully', async () => {
