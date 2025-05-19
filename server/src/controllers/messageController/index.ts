@@ -32,8 +32,8 @@ export const getMessage = async (
     res: Response,
     next: NextFunction,
 ) => {
-    const { messageid } = req.params;
     try {
+        const { messageid } = req.params;
         const message = await getMessageByID(messageid);
         res.json({
             status: true,

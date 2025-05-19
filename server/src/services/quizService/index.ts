@@ -1,8 +1,18 @@
 import prisma from '../../client';
+import { RequestPagination } from '../../middlewares/pagination';
 
-export const getAllQuizzes = async () => {
-    const quizzes = await prisma.quizzes.findMany();
-    return quizzes;
+export const getPaginatedQuizzes = async (
+    requestPagination: RequestPagination,
+) => {
+    const { skip, take } = requestPagination;
+    const [quizCount, quizzes] = await prisma.$transaction([
+        prisma.quizzes.count(),
+        prisma.quizzes.findMany({
+            skip,
+            take,
+        }),
+    ]);
+    return { quizCount, quizzes };
 };
 
 export const getQuizByID = async (quizid: string) => {

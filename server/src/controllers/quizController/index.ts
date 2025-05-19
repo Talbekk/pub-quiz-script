@@ -1,50 +1,38 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '../../client';
+import { getPaginatedQuizzes, getQuizByID } from '../../services/quizService';
+import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 
-export const getQuizzes = async (req: Request, res: Response) => {
-    const page = Math.max(1, Number(req.query.page) || 1);
-    const limit = Math.max(1, Number(req.query.limit) || 10);
-    const startIndex = (page - 1) * limit;
-
-    const [quizCount, quizzes] = await prisma.$transaction([
-        prisma.quizzes.count(),
-        prisma.quizzes.findMany({
-            skip: startIndex,
-            take: limit,
-        }),
-    ]);
-
-    res.json({
-        status: true,
-        message: 'Quizzes Successfully fetched',
-        data: quizzes,
-        ...(startIndex + limit < quizCount && {
-            next: {
-                page: page + 1,
-                limit: limit,
-            },
-        }),
-        ...(startIndex > 0 && {
-            previous: {
-                page: page - 1,
-                limit: limit,
-            },
-        }),
-    });
+export const getQuizzes = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { quizCount, quizzes } = await getPaginatedQuizzes(
+            req.pagination!,
+        );
+        const response = generatePaginatedResponse({
+            status: true,
+            message: 'Quizzes Successfully fetched',
+            data: quizzes,
+            collectionCount: quizCount,
+            requestPagination: req.pagination!,
+        });
+        res.json(response);
+    } catch (error) {
+        next(error);
+    }
 };
 
-export const getQuiz = async (req: Request, res: Response) => {
-    const { quizid } = req.params;
-    const quiz = await prisma.quizzes.findFirst({
-        where: {
-            id: quizid,
-        },
-    });
-    res.json({
-        status: true,
-        message: 'Quiz Successfully fetched',
-        data: quiz,
-    });
+export const getQuiz = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { quizid } = req.params;
+        const quiz = await getQuizByID(quizid);
+        res.json({
+            status: true,
+            message: 'Quiz Successfully fetched',
+            data: quiz,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 export const updateQuiz = async (req: Request, res: Response) => {

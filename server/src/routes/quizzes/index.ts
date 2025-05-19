@@ -4,9 +4,10 @@ import {
     getQuiz,
     updateQuiz,
 } from '../../controllers/quizController';
+import { pagination } from '../../middlewares/pagination';
 
 const quizRoute = Router();
-quizRoute.get('/', getQuizzes);
+quizRoute.get('/', pagination(), getQuizzes);
 quizRoute.get('/:quizid', getQuiz);
 quizRoute.patch('/:quizid', updateQuiz);
 export default quizRoute;

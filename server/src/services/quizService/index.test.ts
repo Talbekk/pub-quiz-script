@@ -1,22 +1,28 @@
 import prisma from '../../test_utils/__mocks__/prisma';
 import { describe, expect, it, vi } from 'vitest';
-import { getAllQuizzes, getQuizByID } from '.';
+import { getPaginatedQuizzes, getQuizByID } from '.';
 import { mockQuizzes } from '../../test_utils/__mocks__/quizzes';
+import { requestPagination } from '../../test_utils/__mocks__/pagination';
 
 vi.mock('../../client', () => ({
     default: prisma,
 }));
 
 describe('quizService:', () => {
-    describe('getAllQuizzes', () => {
-        it('getAllQuizzes should return a list of quizzes', async () => {
+    describe('getPaginatedQuizzes', () => {
+        it('getPaginatedQuizzes should return a paginated list of quizzes', async () => {
+            prisma.quizzes.count.mockResolvedValue(50);
             prisma.quizzes.findMany.mockResolvedValue(mockQuizzes);
+            prisma.$transaction.mockResolvedValue([50, mockQuizzes]);
+            const result = await getPaginatedQuizzes(requestPagination);
 
-            const quizzes = await getAllQuizzes();
-            expect(quizzes).toBeInstanceOf(Array);
-            expect(quizzes.length).toBe(2);
-            expect(quizzes[0]).toHaveProperty('id', '1');
-            expect(quizzes[1]).toHaveProperty('id', '2');
+            expect(result.quizCount).toBe(50);
+            expect(result.quizzes).toEqual(mockQuizzes);
+            expect(prisma.quizzes.count).toHaveBeenCalled();
+            expect(prisma.quizzes.findMany).toHaveBeenCalledWith({
+                skip: 0,
+                take: 10,
+            });
         });
     });
 
