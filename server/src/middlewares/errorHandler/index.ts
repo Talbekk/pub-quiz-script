@@ -16,24 +16,16 @@ export class ThrowError extends Error {
 }
 
 export const errorHandler = (
-    err: Error | ThrowError,
+    err: any,
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
     console.error(err);
-    if (err instanceof ThrowError) {
-        res.status(err.statusCode).json({
-            status: false,
-            message: err.message,
-            data: err.data,
-        });
-    } else {
-        // Handle unexpected errors
-        res.status(500).json({
-            status: false,
-            message: err?.message || 'Internal Server Error',
-            data: {},
-        });
-    }
+    const status = err.statusCode || err.status || 500;
+    res.status(status).json({
+        status: false,
+        message: err.message || 'Internal Server Error',
+        data: err.data || {},
+    });
 };

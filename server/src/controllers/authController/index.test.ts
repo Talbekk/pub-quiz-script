@@ -1,22 +1,73 @@
-import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
+import request from 'supertest';
+import * as authService from '../../services/authService';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import app from '../../app';
 
-describe('Auth Controller', () => {
-    describe('Login', () => {
-        it('should login successfully with valid credentials', () => {
-        });
+vi.mock('../../services/authService');
 
-        it('should fail login with invalid credentials', () => {
-        });
-        it('should handle login error', () => {
-        });
-        it('should handle login failure', () => {
-        });
+beforeEach(() => {
+    vi.clearAllMocks();
+});
+
+describe('Auth Controller Integration', () => {
+    it('POST /auth/login - success', async () => {
+        (authService.authenticateUser as any).mockResolvedValue({ id: '1', username: 'test' });
+        const response = await request(app).post('/auth/login').send({ username: 'test', password: 'pass' });
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Login successful');
+        expect(response.body).toHaveProperty('user');
     });
 
-    describe('Logout', () => {
-        it('should logout successfully', () => {
+    it('POST /auth/login - invalid credentials', async () => {
+        (authService.authenticateUser as any).mockRejectedValue({
+            statusCode: 401,
+            message: 'Authentication failed',
+            data: { message: 'Invalid credentials' },
         });
-        it('should handle logout error', () => {
+        const response = await request(app).post('/auth/login').send({ username: 'bad', password: 'bad' });
+        console.log(`response.body: `, response.body);
+        console.log(`response.status: `, response.status);
+        expect(response.status).toBe(401);
+        expect(response.body).toHaveProperty('message', 'Authentication failed');
+    });
+
+    it('POST /auth/login - internal error', async () => {
+        (authService.authenticateUser as any).mockRejectedValue({
+            statusCode: 500,
+            message: 'Authentication error',
+            data: {},
         });
+        const response = await request(app).post('/auth/login').send({ username: 'test', password: 'pass' });
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('message', 'Authentication error');
+    });
+
+    it('POST /auth/logout - success', async () => {
+        (authService.logoutUser as any).mockResolvedValue(undefined);
+        const response = await request(app).post('/auth/logout');
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Logged out');
+    });
+
+    it('POST /auth/logout - error', async () => {
+        (authService.logoutUser as any).mockRejectedValue({
+            statusCode: 500,
+            message: 'Logout failed',
+            data: {},
+        });
+        const response = await request(app).post('/auth/logout');
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('message', 'Logout failed');
+    });
+
+    it('POST /auth/logout - not supported', async () => {
+        (authService.logoutUser as any).mockRejectedValue({
+            statusCode: 500,
+            message: 'Logout not supported on this server',
+            data: {},
+        });
+        const response = await request(app).post('/auth/logout');
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('message', 'Logout not supported on this server');
     });
 });
