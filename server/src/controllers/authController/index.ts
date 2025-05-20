@@ -17,39 +17,41 @@ export const login = (
     res: Response,
     next: NextFunction,
 ) => {
-    try {
-        passport.authenticate(
-            'local',
-            (err: any, user: User | false, info: AuthInfo) => {
-                if (err) {
-                    throw new ThrowError(
+    passport.authenticate(
+        'local',
+        (err: any, user: User | false, info: AuthInfo) => {
+            if (err) {
+                return next(
+                    new ThrowError(
                         500,
                         'Authentication error',
                         { message: err.message, error: err.error },
-                    );
-                }
-                if (!user) {
-                    throw new ThrowError(
+                    )
+                );
+            }
+            if (!user) {
+                return next(
+                    new ThrowError(
                         401,
                         'Authentication failed',
                         { message: info?.message || 'Authentication failed' },
-                    );
-                }
-                req.logIn(user, (err) => {
-                    if (err) {
-                        throw new ThrowError(
+                    )
+                );
+            }
+            req.logIn(user, (err) => {
+                if (err) {
+                    return next(
+                        new ThrowError(
                             500,
                             'Login failed',
                             { message: 'Login failed', error: err },
-                        );
-                    }
-                    res.json({ message: 'Login successful', user });
-                });
-            },
-        )(req, res, next);
-    } catch (error) {
-        next(error);
-    }
+                        )
+                    );
+                }
+                res.json({ message: 'Login successful', user });
+            });
+        },
+    )(req, res, next);
 };
 
 export const logout = async (
