@@ -8,16 +8,16 @@ passport.use(
     new Strategy(async (username, password, done) => {
         try {
             const user = await prisma.users.findUnique({ where: { username } });
-            if (!user)
+            if (!user) {
                 return done(null, false, { message: 'Incorrect username.' });
-
+            }
             const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch)
+            if (!isMatch) {
                 return done(null, false, { message: 'Incorrect password.' });
-
+            }
             return done(null, user);
         } catch (err) {
-            return done(err);
+            return done({ message: 'Authentication error', error: err });
         }
     }),
 );
@@ -28,6 +28,6 @@ passport.deserializeUser(async (id: string, done) => {
         const user = await prisma.users.findUnique({ where: { id } });
         done(null, user);
     } catch (err) {
-        done(err);
+        done({ message: 'Deserialization error', error: err });
     }
 });

@@ -2,8 +2,14 @@ import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import { ThrowError } from '../../middlewares/errorHandler';
-import { getAllParticipants, getParticipantByID } from '../../services/participantService';
-import { mockParticipant1, mockParticipants } from '../../test_utils/__mocks__/participants';
+import {
+    getAllParticipants,
+    getParticipantByID,
+} from '../../services/participantService';
+import {
+    mockParticipant1,
+    mockParticipants,
+} from '../../test_utils/__mocks__/participants';
 
 vi.mock('../../services/participantService', () => ({
     getPaginatedParticipants: vi.fn(),
@@ -15,7 +21,6 @@ beforeEach(() => {
 });
 
 describe('Participant Controller', () => {
-
     describe('getParticipants', () => {
         it('GET /participants should return a list of participants', async () => {
             const mockResponse = {
@@ -67,7 +72,9 @@ describe('Participant Controller', () => {
                 data: mockParticipant1,
             };
 
-            const mockGetParticipantByID = vi.fn().mockResolvedValue(mockParticipant1);
+            const mockGetParticipantByID = vi
+                .fn()
+                .mockResolvedValue(mockParticipant1);
 
             (getParticipantByID as Mock) = mockGetParticipantByID;
             const response = await request(app).get('/participants/1');

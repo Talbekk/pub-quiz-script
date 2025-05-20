@@ -8,47 +8,46 @@ import app from '../../app';
 import { ThrowError } from '../../middlewares/errorHandler';
 
 describe('QuizController', () => {
+    vi.mock('../../services/quizService', () => ({
+        getPaginatedQuizzes: vi.fn(),
+        getQuizByID: vi.fn(),
+    }));
 
-vi.mock('../../services/quizService', () => ({
-    getPaginatedQuizzes: vi.fn(),
-    getQuizByID: vi.fn(),
-}));
+    vi.mock('../../services/generatePaginatedResponse', () => ({
+        generatePaginatedResponse: vi.fn(),
+    }));
 
-vi.mock('../../services/generatePaginatedResponse', () => ({
-    generatePaginatedResponse: vi.fn(),
-}));
-
-beforeEach(() => {
-    vi.clearAllMocks();
-});
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
 
     describe('getQuizzes', () => {
         it('GET /quizzes should return a list of quizzes', async () => {
-                const mockResponse = {
-                    status: true,
-                    message: 'Quizzes Successfully fetched',
-                    data: mockQuizzes,
-                    next: { page: 2, limit: 10 },
-                };
+            const mockResponse = {
+                status: true,
+                message: 'Quizzes Successfully fetched',
+                data: mockQuizzes,
+                next: { page: 2, limit: 10 },
+            };
 
-                (getPaginatedQuizzes as Mock).mockResolvedValue({
-                    quizCount: 50,
-                    quizzes: mockQuizzes,
-                });
+            (getPaginatedQuizzes as Mock).mockResolvedValue({
+                quizCount: 50,
+                quizzes: mockQuizzes,
+            });
 
-                (generatePaginatedResponse as Mock).mockReturnValue(mockResponse);
-                const response = await request(app).get('/quizzes');
+            (generatePaginatedResponse as Mock).mockReturnValue(mockResponse);
+            const response = await request(app).get('/quizzes');
 
-                expect(getPaginatedQuizzes).toHaveBeenCalledWith(mockPagination);
-                expect(generatePaginatedResponse).toHaveBeenCalledWith({
-                    status: true,
-                    message: 'Quizzes Successfully fetched',
-                    data: mockQuizzes,
-                    collectionCount: 50,
-                    requestPagination: mockPagination,
-                });
-                expect(response.status).toBe(200);
-                expect(response.body).toEqual(mockResponse);
+            expect(getPaginatedQuizzes).toHaveBeenCalledWith(mockPagination);
+            expect(generatePaginatedResponse).toHaveBeenCalledWith({
+                status: true,
+                message: 'Quizzes Successfully fetched',
+                data: mockQuizzes,
+                collectionCount: 50,
+                requestPagination: mockPagination,
+            });
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual(mockResponse);
         });
 
         it('GET /quizzes should handle empty results gracefully', async () => {
@@ -91,7 +90,6 @@ beforeEach(() => {
     });
 
     describe('getQuiz', () => {
-
         it('GET /quizzes/:quizid should return a quiz by ID', async () => {
             (getQuizByID as Mock).mockResolvedValue(mockQuiz1);
 
@@ -122,8 +120,6 @@ beforeEach(() => {
             expect(response.body).toHaveProperty('data', {
                 id: 'non-existent-id',
             });
-
         });
-        
     });
 });

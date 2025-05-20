@@ -13,7 +13,11 @@ export const getParticipants = async (_: Request, res: Response) => {
     });
 };
 
-export const getParticipant = async (req: Request, res: Response, next: NextFunction) => {
+export const getParticipant = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const { userid } = req.params;
         const participant = await getParticipantByID(userid);

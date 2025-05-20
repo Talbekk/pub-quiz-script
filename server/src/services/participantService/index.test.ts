@@ -40,7 +40,9 @@ describe('participantService:', () => {
 
         it('getParticipantByID should throw an error if participant is not found', async () => {
             const userid = 'non-existent-id';
-            const mockError = new ThrowError(404, 'Participant not found', { id: 'non-existent-id' });
+            const mockError = new ThrowError(404, 'Participant not found', {
+                id: 'non-existent-id',
+            });
             prisma.participants.findFirst.mockResolvedValue(null);
             await expect(getParticipantByID(userid)).rejects.toThrow(mockError);
         });

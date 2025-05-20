@@ -3,7 +3,11 @@ import prisma from '../../client';
 import { getPaginatedQuizzes, getQuizByID } from '../../services/quizService';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 
-export const getQuizzes = async (req: Request, res: Response, next: NextFunction) => {
+export const getQuizzes = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const { quizCount, quizzes } = await getPaginatedQuizzes(
             req.pagination!,
@@ -21,7 +25,11 @@ export const getQuizzes = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-export const getQuiz = async (req: Request, res: Response, next: NextFunction) => {
+export const getQuiz = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const { quizid } = req.params;
         const quiz = await getQuizByID(quizid);
