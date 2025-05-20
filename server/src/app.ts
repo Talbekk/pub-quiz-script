@@ -15,12 +15,11 @@ app.use(
         saveUninitialized: true,
     }),
 );
-
 app.use(cors());
 app.use(express.json());
-app.use('/', indexRoute);
-app.use(errorHandler);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/', indexRoute);
+app.use(errorHandler);
 
 export default app;
