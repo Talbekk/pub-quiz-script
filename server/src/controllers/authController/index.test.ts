@@ -25,8 +25,6 @@ describe('Auth Controller Integration', () => {
             data: { message: 'Invalid credentials' },
         });
         const response = await request(app).post('/auth/login').send({ username: 'bad', password: 'bad' });
-        console.log(`response.body: `, response.body);
-        console.log(`response.status: `, response.status);
         expect(response.status).toBe(401);
         expect(response.body).toHaveProperty('message', 'Authentication failed');
     });

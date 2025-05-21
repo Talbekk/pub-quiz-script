@@ -29,10 +29,8 @@ const possibleScores = [
 ];
 
 const getGroupChatMessages = () => {
-    console.log('hits getGroupChatMessages');
     console.log(typeof groupChat);
     const formattedData = groupChat.messages;
-    console.log('number of participants:', formattedData.length);
     const filteredData = formattedData.filter((data) => {
         if (data.content) {
             return possibleScores.some(
@@ -43,7 +41,6 @@ const getGroupChatMessages = () => {
         }
         return false;
     });
-    console.log('filtered data', filteredData.length);
     filteredData.forEach((data) => {
         console.log('sender:', data.sender_name);
         console.log('entry:', data.content);
