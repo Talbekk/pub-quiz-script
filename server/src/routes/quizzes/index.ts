@@ -5,9 +5,10 @@ import {
     updateQuiz,
 } from '../../controllers/quizController';
 import { pagination } from '../../middlewares/pagination';
+import { isAuthenticated } from '../../middlewares/auth';
 
 const quizRoute = Router();
 quizRoute.get('/', pagination(), getQuizzes);
 quizRoute.get('/:quizid', getQuiz);
-quizRoute.patch('/:quizid', updateQuiz);
+quizRoute.patch('/:quizid', isAuthenticated, updateQuiz);
 export default quizRoute;
