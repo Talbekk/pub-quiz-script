@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { getPaginatedQuizzes, getQuizByID, updateQuizByID } from '../../services/quizService';
+import {
+    getPaginatedQuizzes,
+    getQuizByID,
+    updateQuizByID,
+} from '../../services/quizService';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 
 export const getQuizzes = async (
@@ -42,11 +46,15 @@ export const getQuiz = async (
     }
 };
 
-export const updateQuiz = async (req: Request, res: Response, next: NextFunction) => {
+export const updateQuiz = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const { quizid } = req.params;
         const updatedData = req.body;
-    
+
         const quiz = await updateQuizByID(quizid, updatedData);
         res.json({
             status: true,

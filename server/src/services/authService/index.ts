@@ -19,35 +19,31 @@ export function authenticateUser(req: Request): Promise<User> {
             (err: any, user: User | false, info: AuthInfo) => {
                 if (err) {
                     return reject(
-                        new ThrowError(
-                            500,
-                            'Authentication error',
-                            { message: err.message, error: err.error },
-                        )
+                        new ThrowError(500, 'Authentication error', {
+                            message: err.message,
+                            error: err.error,
+                        }),
                     );
                 }
                 if (!user) {
                     return reject(
-                        new ThrowError(
-                            401,
-                            'Authentication failed',
-                            { message: info?.message || 'Authentication failed' },
-                        )
+                        new ThrowError(401, 'Authentication failed', {
+                            message: info?.message || 'Authentication failed',
+                        }),
                     );
                 }
                 req.logIn(user, (err) => {
                     if (err) {
                         return reject(
-                            new ThrowError(
-                                500,
-                                'Login failed',
-                                { message: 'Login failed', error: err },
-                            )
+                            new ThrowError(500, 'Login failed', {
+                                message: 'Login failed',
+                                error: err,
+                            }),
                         );
                     }
                     resolve(user);
                 });
-            }
+            },
         )(req);
     });
 }

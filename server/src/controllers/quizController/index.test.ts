@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
 import { mockQuizzes, mockQuiz1 } from '../../test_utils/__mocks__/quizzes';
-import { getQuizByID, getPaginatedQuizzes, updateQuizByID } from '../../services/quizService';
+import {
+    getQuizByID,
+    getPaginatedQuizzes,
+    updateQuizByID,
+} from '../../services/quizService';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 import { requestPagination as mockPagination } from '../../test_utils/__mocks__/pagination';
 import { isAuthenticated } from '../../middlewares/auth';
@@ -133,7 +137,9 @@ describe('QuizController', () => {
         it('PATCH /quizzes/:quizid should update a quiz by ID when authenticated', async () => {
             (updateQuizByID as Mock).mockResolvedValue(mockQuiz1);
 
-            const response = await request(app).patch('/quizzes/1').send(mockQuiz1);
+            const response = await request(app)
+                .patch('/quizzes/1')
+                .send(mockQuiz1);
 
             expect(updateQuizByID).toHaveBeenCalledWith('1', mockQuiz1);
             expect(response.status).toBe(200);
@@ -146,14 +152,22 @@ describe('QuizController', () => {
 
         it('PATCH /quizzes/:quizid should handle not authorized error gracefully', async () => {
             (isAuthenticated as Mock).mockImplementation((req, res, next) => {
-                throw new ThrowError(401, 'You are not authorized to handle this request');
+                throw new ThrowError(
+                    401,
+                    'You are not authorized to handle this request',
+                );
             });
 
-            const response = await request(app).patch('/quizzes/1').send(mockQuiz1);
+            const response = await request(app)
+                .patch('/quizzes/1')
+                .send(mockQuiz1);
 
             expect(response.status).toBe(401);
             expect(response.body).toHaveProperty('status', false);
-            expect(response.body).toHaveProperty('message', 'You are not authorized to handle this request');
+            expect(response.body).toHaveProperty(
+                'message',
+                'You are not authorized to handle this request',
+            );
             (isAuthenticated as Mock).mockReset();
         });
 
@@ -164,10 +178,14 @@ describe('QuizController', () => {
                 });
             });
 
+            const response = await request(app)
+                .patch('/quizzes/non-existent-id')
+                .send(mockQuiz1);
 
-            const response = await request(app).patch('/quizzes/non-existent-id').send(mockQuiz1);
-
-            expect(updateQuizByID).toHaveBeenCalledWith('non-existent-id', mockQuiz1);
+            expect(updateQuizByID).toHaveBeenCalledWith(
+                'non-existent-id',
+                mockQuiz1,
+            );
             expect(response.status).toBe(404);
             expect(response.body).toHaveProperty('status', false);
             expect(response.body).toHaveProperty('message', 'Quiz not found');

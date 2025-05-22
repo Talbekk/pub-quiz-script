@@ -31,10 +31,7 @@ export const getQuizByID = async (quizid: string) => {
     return quiz;
 };
 
-export const updateQuizByID = async (
-    quizid: string,
-    data: Partial<Quiz>
-) => {
+export const updateQuizByID = async (quizid: string, data: Partial<Quiz>) => {
     const quiz = await prisma.quizzes.findFirst({
         where: {
             id: quizid,

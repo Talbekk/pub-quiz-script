@@ -11,8 +11,13 @@ beforeEach(() => {
 
 describe('Auth Controller Integration', () => {
     it('POST /auth/login - success', async () => {
-        (authService.authenticateUser as any).mockResolvedValue({ id: '1', username: 'test' });
-        const response = await request(app).post('/auth/login').send({ username: 'test', password: 'pass' });
+        (authService.authenticateUser as any).mockResolvedValue({
+            id: '1',
+            username: 'test',
+        });
+        const response = await request(app)
+            .post('/auth/login')
+            .send({ username: 'test', password: 'pass' });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('message', 'Login successful');
         expect(response.body).toHaveProperty('user');
@@ -24,9 +29,14 @@ describe('Auth Controller Integration', () => {
             message: 'Authentication failed',
             data: { message: 'Invalid credentials' },
         });
-        const response = await request(app).post('/auth/login').send({ username: 'bad', password: 'bad' });
+        const response = await request(app)
+            .post('/auth/login')
+            .send({ username: 'bad', password: 'bad' });
         expect(response.status).toBe(401);
-        expect(response.body).toHaveProperty('message', 'Authentication failed');
+        expect(response.body).toHaveProperty(
+            'message',
+            'Authentication failed',
+        );
     });
 
     it('POST /auth/login - internal error', async () => {
@@ -35,7 +45,9 @@ describe('Auth Controller Integration', () => {
             message: 'Authentication error',
             data: {},
         });
-        const response = await request(app).post('/auth/login').send({ username: 'test', password: 'pass' });
+        const response = await request(app)
+            .post('/auth/login')
+            .send({ username: 'test', password: 'pass' });
         expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('message', 'Authentication error');
     });
@@ -66,6 +78,9 @@ describe('Auth Controller Integration', () => {
         });
         const response = await request(app).post('/auth/logout');
         expect(response.status).toBe(500);
-        expect(response.body).toHaveProperty('message', 'Logout not supported on this server');
+        expect(response.body).toHaveProperty(
+            'message',
+            'Logout not supported on this server',
+        );
     });
 });

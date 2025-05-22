@@ -13,9 +13,11 @@ describe('Auth Service', () => {
                 logIn: (user: any, cb: any) => cb(null),
             };
 
-            (passport.authenticate as any).mockImplementation((_strategy: string, cb: any) => {
-                return (reqArg: any) => cb(null, mockUser, {});
-            });
+            (passport.authenticate as any).mockImplementation(
+                (_strategy: string, cb: any) => {
+                    return (reqArg: any) => cb(null, mockUser, {});
+                },
+            );
 
             await expect(authenticateUser(req)).resolves.toEqual(mockUser);
         });
@@ -25,11 +27,16 @@ describe('Auth Service', () => {
                 logIn: vi.fn(),
             };
 
-            (passport.authenticate as any).mockImplementation((_strategy: string, cb: any) => {
-                return (reqArg: any) => cb(null, false, { message: 'Invalid credentials' });
-            });
+            (passport.authenticate as any).mockImplementation(
+                (_strategy: string, cb: any) => {
+                    return (reqArg: any) =>
+                        cb(null, false, { message: 'Invalid credentials' });
+                },
+            );
 
-            await expect(authenticateUser(req)).rejects.toThrowError(ThrowError);
+            await expect(authenticateUser(req)).rejects.toThrowError(
+                ThrowError,
+            );
             await expect(authenticateUser(req)).rejects.toMatchObject({
                 statusCode: 401,
                 message: 'Authentication failed',
@@ -42,11 +49,20 @@ describe('Auth Service', () => {
                 logIn: vi.fn(),
             };
 
-            (passport.authenticate as any).mockImplementation((_strategy: string, cb: any) => {
-                return (reqArg: any) => cb({ message: 'Some error', error: 'details' }, null, {});
-            });
+            (passport.authenticate as any).mockImplementation(
+                (_strategy: string, cb: any) => {
+                    return (reqArg: any) =>
+                        cb(
+                            { message: 'Some error', error: 'details' },
+                            null,
+                            {},
+                        );
+                },
+            );
 
-            await expect(authenticateUser(req)).rejects.toThrowError(ThrowError);
+            await expect(authenticateUser(req)).rejects.toThrowError(
+                ThrowError,
+            );
             await expect(authenticateUser(req)).rejects.toMatchObject({
                 statusCode: 500,
                 message: 'Authentication error',
@@ -59,11 +75,15 @@ describe('Auth Service', () => {
                 logIn: (_user: any, cb: any) => cb(new Error('login failed')),
             };
 
-            (passport.authenticate as any).mockImplementation((_strategy: string, cb: any) => {
-                return (reqArg: any) => cb(null, mockUser, {});
-            });
+            (passport.authenticate as any).mockImplementation(
+                (_strategy: string, cb: any) => {
+                    return (reqArg: any) => cb(null, mockUser, {});
+                },
+            );
 
-            await expect(authenticateUser(req)).rejects.toThrowError(ThrowError);
+            await expect(authenticateUser(req)).rejects.toThrowError(
+                ThrowError,
+            );
             await expect(authenticateUser(req)).rejects.toMatchObject({
                 statusCode: 500,
                 message: 'Login failed',
@@ -78,14 +98,15 @@ describe('Auth Service', () => {
             };
             await expect(logoutUser(req)).resolves.toBeUndefined();
         });
-    
+
         it('rejects if logout returns an error', async () => {
             const req: any = {
-                logout: (cb: (err?: any) => void) => cb(new Error('logout failed')),
+                logout: (cb: (err?: any) => void) =>
+                    cb(new Error('logout failed')),
             };
             await expect(logoutUser(req)).rejects.toThrow('logout failed');
         });
-    
+
         it('rejects if req.logout is not a function', async () => {
             const req: any = {};
             await expect(logoutUser(req)).rejects.toThrowError(ThrowError);
@@ -95,6 +116,4 @@ describe('Auth Service', () => {
             });
         });
     });
-
-    
 });
