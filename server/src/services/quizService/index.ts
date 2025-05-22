@@ -1,4 +1,6 @@
 import prisma from '../../client';
+import { Quiz } from '../../commands/AddQuizzes';
+import { ThrowError } from '../../middlewares/errorHandler';
 import { RequestPagination } from '../../middlewares/pagination';
 
 export const getPaginatedQuizzes = async (
@@ -22,7 +24,31 @@ export const getQuizByID = async (quizid: string) => {
         },
     });
     if (!quiz) {
-        throw new Error('Quiz not found');
+        throw new ThrowError(404, 'Quiz not found', {
+            id: quizid,
+        });
     }
     return quiz;
+};
+
+export const updateQuizByID = async (
+    quizid: string,
+    data: Partial<Quiz>
+) => {
+    const quiz = await prisma.quizzes.findFirst({
+        where: {
+            id: quizid,
+        },
+    });
+    if (!quiz) {
+        throw new ThrowError(404, 'Quiz not found', {
+            id: quizid,
+        });
+    }
+    return prisma.quizzes.update({
+        where: {
+            id: quizid,
+        },
+        data,
+    });
 };

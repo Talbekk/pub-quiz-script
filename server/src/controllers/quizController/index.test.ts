@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
 import { mockQuizzes, mockQuiz1 } from '../../test_utils/__mocks__/quizzes';
-import { getQuizByID, getPaginatedQuizzes } from '../../services/quizService';
+import { getQuizByID, getPaginatedQuizzes, updateQuizByID } from '../../services/quizService';
 import { generatePaginatedResponse } from '../../services/generatePaginatedResponse';
 import { requestPagination as mockPagination } from '../../test_utils/__mocks__/pagination';
+import { isAuthenticated } from '../../middlewares/auth';
 import request from 'supertest';
 import app from '../../app';
 import { ThrowError } from '../../middlewares/errorHandler';
@@ -11,10 +12,15 @@ describe('QuizController', () => {
     vi.mock('../../services/quizService', () => ({
         getPaginatedQuizzes: vi.fn(),
         getQuizByID: vi.fn(),
+        updateQuizByID: vi.fn(),
     }));
 
     vi.mock('../../services/generatePaginatedResponse', () => ({
         generatePaginatedResponse: vi.fn(),
+    }));
+
+    vi.mock('../../middlewares/auth', () => ({
+        isAuthenticated: vi.fn((req, res, next) => next()),
     }));
 
     beforeEach(() => {
@@ -114,6 +120,54 @@ describe('QuizController', () => {
             const response = await request(app).get('/quizzes/non-existent-id');
 
             expect(getQuizByID).toHaveBeenCalledWith('non-existent-id');
+            expect(response.status).toBe(404);
+            expect(response.body).toHaveProperty('status', false);
+            expect(response.body).toHaveProperty('message', 'Quiz not found');
+            expect(response.body).toHaveProperty('data', {
+                id: 'non-existent-id',
+            });
+        });
+    });
+
+    describe('updateQuiz', () => {
+        it('PATCH /quizzes/:quizid should update a quiz by ID when authenticated', async () => {
+            (updateQuizByID as Mock).mockResolvedValue(mockQuiz1);
+
+            const response = await request(app).patch('/quizzes/1').send(mockQuiz1);
+
+            expect(updateQuizByID).toHaveBeenCalledWith('1', mockQuiz1);
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                status: true,
+                message: 'Quiz Successfully updated',
+                data: mockQuiz1,
+            });
+        });
+
+        it('PATCH /quizzes/:quizid should handle not authorized error gracefully', async () => {
+            (isAuthenticated as Mock).mockImplementation((req, res, next) => {
+                throw new ThrowError(401, 'You are not authorized to handle this request');
+            });
+
+            const response = await request(app).patch('/quizzes/1').send(mockQuiz1);
+
+            expect(response.status).toBe(401);
+            expect(response.body).toHaveProperty('status', false);
+            expect(response.body).toHaveProperty('message', 'You are not authorized to handle this request');
+            (isAuthenticated as Mock).mockReset();
+        });
+
+        it('PATCH /quizzes/:quizid should handle not found error gracefully', async () => {
+            (updateQuizByID as Mock).mockImplementation(() => {
+                throw new ThrowError(404, 'Quiz not found', {
+                    id: 'non-existent-id',
+                });
+            });
+
+
+            const response = await request(app).patch('/quizzes/non-existent-id').send(mockQuiz1);
+
+            expect(updateQuizByID).toHaveBeenCalledWith('non-existent-id', mockQuiz1);
             expect(response.status).toBe(404);
             expect(response.body).toHaveProperty('status', false);
             expect(response.body).toHaveProperty('message', 'Quiz not found');
