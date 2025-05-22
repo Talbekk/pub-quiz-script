@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react';
 import { Header } from '.';
 
-describe("Header", () => {
-    it("renders correctly", () => {
+describe('Header', () => {
+    it('renders correctly', () => {
         render(<Header />);
-        expect(screen.getByText("Pub Quiz")).toBeInTheDocument();
+        expect(screen.getByText('Pub Quiz')).toBeInTheDocument();
     });
 });

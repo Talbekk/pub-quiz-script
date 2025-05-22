@@ -1,8 +1,5 @@
-import type { FunctionComponent } from "react";
-
+import type { FunctionComponent } from 'react';
 
 export const Description: FunctionComponent = () => {
-    return (
-        <p>Test your knowledge with our pub quiz!</p>
-    );
+    return <p>Test your knowledge with our pub quiz!</p>;
 };
