@@ -43,18 +43,22 @@ export const getQuiz = async (
     }
 };
 
-export const updateQuiz = async (req: Request, res: Response) => {
-    const { quizid } = req.params;
-    const updatedData = req.body;
-
-    const quiz = await prisma.quizzes.update({
-        where: { id: quizid },
-        data: updatedData,
-    });
-
-    res.json({
-        status: true,
-        message: 'Quiz Successfully updated',
-        data: quiz,
-    });
+export const updateQuiz = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { quizid } = req.params;
+        const updatedData = req.body;
+    
+        const quiz = await prisma.quizzes.update({
+            where: { id: quizid },
+            data: updatedData,
+        });
+    
+        res.json({
+            status: true,
+            message: 'Quiz Successfully updated',
+            data: quiz,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
