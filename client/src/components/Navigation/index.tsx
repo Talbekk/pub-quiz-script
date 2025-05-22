@@ -4,7 +4,7 @@ import type { FunctionComponent } from 'react';
 export const Navigation: FunctionComponent = () => {
     return (
         <div>
-            <Link to="/">Home</Link> <Link to="/about">About</Link>
+            <Link to="/">Home</Link>
         </div>
     );
 };
