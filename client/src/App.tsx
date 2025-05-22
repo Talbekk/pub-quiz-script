@@ -1,10 +1,12 @@
 import './App.css';
+import { Description } from './components/Description';
+import { Header } from './components/Header';
 
 export const App = () => {
     return (
         <>
-            <h1>Pub Quiz</h1>
-            <p>Test your knowledge with our pub quiz!</p>
+            <Header />
+            <Description />
         </>
     );
 };
