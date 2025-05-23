@@ -40,9 +40,6 @@ function LoginComponent() {
 
         await router.invalidate();
 
-        // This is just a hack being used to wait for the auth state to update
-        // in a real app, you'd want to use a more robust solution
-
         await navigate({ to: fallback });
       } catch (error) {
         console.error('Error logging in: ', error);
