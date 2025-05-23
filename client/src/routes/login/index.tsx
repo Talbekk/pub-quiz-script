@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { useAuth } from '../../services/auth';
 import { useCallback } from 'react';
-
+import styles from './styles.module.scss';
 const fallback = '/' as const;
 
 export const Route = createFileRoute('/login/')({
@@ -53,9 +53,8 @@ function LoginComponent() {
   const isLoggingIn = isLoading || isSubmitting;
 
   return (
-    <div>
-      <h3>Login page</h3>
-      <p>Login to see all the cool content in here.</p>
+    <section className={styles.loginContainer}>
+      <h3>Login</h3>
       <form onSubmit={onFormSubmit}>
         <fieldset disabled={isLoggingIn}>
           <div>
@@ -71,6 +70,6 @@ function LoginComponent() {
           <button type="submit">{isLoggingIn ? 'Loading...' : 'Login'}</button>
         </fieldset>
       </form>
-    </div>
+    </section>
   );
 }
