@@ -12,7 +12,7 @@ const fallback = '/' as const;
 export const Route = createFileRoute('/login/')({
     beforeLoad: ({ context }) => {
         if (context.auth.isAuthenticated) {
-            throw redirect({ to: fallback });
+            throw redirect({ to: '/admin' });
         }
     },
     component: LoginComponent,
@@ -58,9 +58,9 @@ function LoginComponent() {
                 <fieldset disabled={isLoggingIn} className={styles.fieldset}>
                     <legend>Enter your credentials</legend>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="username-input">Username</label>
+                        <label htmlFor="username">Username</label>
                         <input
-                            id="username-input"
+                            id="username"
                             name="username"
                             placeholder="Enter your name"
                             type="text"
@@ -68,9 +68,9 @@ function LoginComponent() {
                         />
                     </div>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="password-input">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input
-                            id="password-input"
+                            id="password"
                             name="password"
                             placeholder="Enter your password"
                             type="password"
