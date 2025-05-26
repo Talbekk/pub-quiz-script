@@ -4,10 +4,9 @@ import {
     useRouter,
     useRouterState,
 } from '@tanstack/react-router';
-import { useAuth } from '../../services/auth';
+import { useLogin } from '../../hooks/useAuthMutations';
 import { useCallback, useState, type FormEvent } from 'react';
 import styles from './styles.module.scss';
-const fallback = '/' as const;
 
 export const Route = createFileRoute('/login/')({
     beforeLoad: ({ context }) => {
@@ -19,11 +18,12 @@ export const Route = createFileRoute('/login/')({
 });
 
 function LoginComponent() {
-    const auth = useAuth();
     const router = useRouter();
     const isLoading = useRouterState({ select: (s) => s.isLoading });
     const navigate = Route.useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const loginMutation = useLogin();
 
     const onFormSubmit = useCallback(
         async (event: FormEvent<HTMLFormElement>) => {
@@ -31,14 +31,14 @@ function LoginComponent() {
             try {
                 event.preventDefault();
                 const data = new FormData(event.currentTarget);
-                const fieldValue = data.get('username');
+                const username = data.get('username')?.toString();
+                const password = data.get('password')?.toString();
 
-                if (!fieldValue) return;
-                const username = fieldValue.toString();
-                await auth.login(username);
+                if (!username || !password) return;
+
+                await loginMutation.mutateAsync({ username, password });
 
                 await router.invalidate();
-
                 await navigate({ to: '/admin' });
             } catch (error) {
                 console.error('Error logging in: ', error);
@@ -46,10 +46,10 @@ function LoginComponent() {
                 setIsSubmitting(false);
             }
         },
-        [auth, router],
+        [loginMutation, router, navigate],
     );
 
-    const isLoggingIn = isLoading || isSubmitting;
+    const isLoggingIn = isLoading || isSubmitting || loginMutation.isPending;
 
     return (
         <section className={styles.loginContainer}>

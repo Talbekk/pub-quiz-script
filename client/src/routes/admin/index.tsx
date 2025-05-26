@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useCallback } from 'react';
-import { useAuth } from '../../services/auth';
+import { useLogout } from '../../hooks/useAuthMutations';
 
 export const Route = createFileRoute('/admin/')({
     beforeLoad: ({ context, location }) => {
@@ -19,17 +19,20 @@ export const Route = createFileRoute('/admin/')({
 function Admin() {
     const router = useRouter();
     const navigate = Route.useNavigate();
-    const auth = useAuth();
+    const logoutMutation = useLogout();
 
-    const handleLogout = useCallback(() => {
+    const handleLogout = useCallback(async () => {
         if (window.confirm('Are you sure you want to logout?')) {
-            auth.logout().then(() => {
-                router.invalidate().finally(() => {
-                    navigate({ to: '/' });
-                });
-            });
+            try {
+                await logoutMutation.mutateAsync();
+                await router.invalidate();
+                await navigate({ to: '/' });
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
         }
-    }, []);
+    }, [logoutMutation, router, navigate]);
+
     return (
         <>
             <p>Hello from Admin!</p>
@@ -37,8 +40,9 @@ function Admin() {
                 type="button"
                 className="hover:underline"
                 onClick={handleLogout}
+                disabled={logoutMutation.isPending}
             >
-                Logout
+                {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
             </button>
         </>
     );
