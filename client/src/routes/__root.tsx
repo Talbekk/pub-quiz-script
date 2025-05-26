@@ -1,6 +1,6 @@
 import { createRootRouteWithContext } from '@tanstack/react-router';
 import type { AuthContextType } from '../services/auth';
-import { Layout } from '../_layout';
+import { Layout } from './-layout';
 
 interface MyRouterContext {
     auth: AuthContextType;

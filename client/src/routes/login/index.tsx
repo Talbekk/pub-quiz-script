@@ -39,7 +39,7 @@ function LoginComponent() {
 
                 await router.invalidate();
 
-                await navigate({ to: fallback });
+                await navigate({ to: '/admin' });
             } catch (error) {
                 console.error('Error logging in: ', error);
             } finally {
