@@ -13,6 +13,7 @@
         "test:watch": "vitest --watch"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.77.2",
         "@tanstack/react-router": "^1.120.5",
         "@tanstack/react-router-devtools": "^1.120.6",
         "dotenv": "^16.5.0",
