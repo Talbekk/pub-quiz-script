@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     createFileRoute,
     redirect,
@@ -6,7 +5,7 @@ import {
     useRouterState,
 } from '@tanstack/react-router';
 import { useAuth } from '../../services/auth';
-import { useCallback } from 'react';
+import { useCallback, useState, type FormEvent } from 'react';
 import styles from './styles.module.scss';
 const fallback = '/' as const;
 
@@ -24,14 +23,14 @@ function LoginComponent() {
     const router = useRouter();
     const isLoading = useRouterState({ select: (s) => s.isLoading });
     const navigate = Route.useNavigate();
-    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onFormSubmit = useCallback(
-        async (evt: React.FormEvent<HTMLFormElement>) => {
+        async (event: FormEvent<HTMLFormElement>) => {
             setIsSubmitting(true);
             try {
-                evt.preventDefault();
-                const data = new FormData(evt.currentTarget);
+                event.preventDefault();
+                const data = new FormData(event.currentTarget);
                 const fieldValue = data.get('username');
 
                 if (!fieldValue) return;
@@ -54,10 +53,11 @@ function LoginComponent() {
 
     return (
         <section className={styles.loginContainer}>
-            <h3>Login</h3>
-            <form onSubmit={onFormSubmit}>
-                <fieldset disabled={isLoggingIn}>
-                    <div>
+            <h3>Admin Login</h3>
+            <form onSubmit={onFormSubmit} className={styles.loginForm}>
+                <fieldset disabled={isLoggingIn} className={styles.fieldset}>
+                    <legend>Enter your credentials</legend>
+                    <div className={styles.inputGroup}>
                         <label htmlFor="username-input">Username</label>
                         <input
                             id="username-input"
@@ -67,7 +67,7 @@ function LoginComponent() {
                             required
                         />
                     </div>
-                    <div>
+                    <div className={styles.inputGroup}>
                         <label htmlFor="password-input">Password</label>
                         <input
                             id="password-input"
@@ -77,7 +77,7 @@ function LoginComponent() {
                             required
                         />
                     </div>
-                    <button type="submit">
+                    <button type="submit" className={styles.loginButton}>
                         {isLoggingIn ? 'Loading...' : 'Login'}
                     </button>
                 </fieldset>
