@@ -6,7 +6,16 @@ import './index.css';
 import { routeTree } from './routeTree.gen';
 import { AuthProvider, useAuth, type AuthContextType } from './services/auth';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            retry: false,
+        },
+        mutations: {},
+    },
+});
 
 const router = createRouter({
     routeTree,
