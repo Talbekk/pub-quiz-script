@@ -4,9 +4,9 @@ import {
     useRouter,
     useRouterState,
 } from '@tanstack/react-router';
-import { useLogin } from '../../hooks/useAuthMutations';
 import { useCallback, useState, type FormEvent } from 'react';
 import styles from './styles.module.scss';
+import { useLogin } from '../../hooks/useLogin';
 
 export const Route = createFileRoute('/login/')({
     beforeLoad: ({ context }) => {

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useCallback } from 'react';
-import { useLogout } from '../../hooks/useAuthMutations';
 import { useFetchParticipants } from '../../hooks/useFetchParticipants';
+import { useLogout } from '../../hooks/useLogout';
 
 export const Route = createFileRoute('/admin/')({
     beforeLoad: ({ context, location }) => {
