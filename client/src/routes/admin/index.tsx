@@ -40,7 +40,7 @@ function Admin() {
 
     return (
         <>
-            <p>Hello from Admin!</p>
+            <h2>Admin Dashboard</h2>
             <p>Participants: {data?.data.length || 0}</p>
             <ul>
                 {data?.data.map((participant) => (

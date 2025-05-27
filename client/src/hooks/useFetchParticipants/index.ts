@@ -3,8 +3,13 @@ import type { QueryObserverResult } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
 import { quizAPI } from '../../api/client';
 
+interface Participant {
+    id: string;
+    full_name: string;
+}
+
 interface FetchParticipantsResponse {
-    data: any[];
+    data: Participant[];
     message: string;
     status: boolean;
 }
