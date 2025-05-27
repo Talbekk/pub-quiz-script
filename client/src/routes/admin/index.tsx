@@ -1,6 +1,7 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useCallback } from 'react';
 import { useLogout } from '../../hooks/useAuthMutations';
+import { useFetchParticipants } from '../../hooks/useFetchParticipants';
 
 export const Route = createFileRoute('/admin/')({
     beforeLoad: ({ context, location }) => {
@@ -20,6 +21,7 @@ function Admin() {
     const router = useRouter();
     const navigate = Route.useNavigate();
     const logoutMutation = useLogout();
+    const { data, isLoading, error } = useFetchParticipants();
 
     const handleLogout = useCallback(async () => {
         if (window.confirm('Are you sure you want to logout?')) {
@@ -33,9 +35,18 @@ function Admin() {
         }
     }, [logoutMutation, router, navigate]);
 
+    if (isLoading) return <div>Loading participants...</div>;
+    if (error) return <div>Error loading participants: {error.message}</div>;
+
     return (
         <>
             <p>Hello from Admin!</p>
+            <p>Participants: {data?.data.length || 0}</p>
+            <ul>
+                {data?.data.map((participant) => (
+                    <li key={participant.id}>{participant.full_name}</li>
+                ))}
+            </ul>
             <button
                 type="button"
                 className="hover:underline"
