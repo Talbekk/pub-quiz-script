@@ -15,9 +15,7 @@ function RootComponent() {
     return (
         <div className="layout">
             <Navigation />
-            <main>
-                <Outlet />
-            </main>
+            <Outlet />
             <Footer />
         </div>
     );
