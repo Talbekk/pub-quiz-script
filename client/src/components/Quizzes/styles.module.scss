@@ -1,0 +1,44 @@
+.quizzesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    width: 100%;
+}
+
+.quizzesTable {
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.quizzesTable th,
+.quizzesTable td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.quizzesTable th {
+    background-color: #f8fafc;
+    color: #2d3748;
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.quizzesTable tr:hover {
+    background-color: #f7fafc;
+}
+
+.quizzesTable tr:last-child td {
+    border-bottom: none;
+}
+
+.quizzesTable td {
+    color: #4a5568;
+    font-size: 0.95rem;
+}
