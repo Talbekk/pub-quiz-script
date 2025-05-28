@@ -2,6 +2,8 @@ import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useCallback } from 'react';
 import { useFetchParticipants } from '../../hooks/useFetchParticipants';
 import { useLogout } from '../../hooks/useLogout';
+import { Spinner } from '../../components/Spinner';
+import { ErrorAlert } from '../../components/ErrorAlert';
 
 export const Route = createFileRoute('/admin/')({
     beforeLoad: ({ context, location }) => {
@@ -22,7 +24,6 @@ function Admin() {
     const navigate = Route.useNavigate();
     const logoutMutation = useLogout();
     const { data, isLoading, error } = useFetchParticipants();
-
     const handleLogout = useCallback(async () => {
         if (window.confirm('Are you sure you want to logout?')) {
             try {
@@ -35,8 +36,8 @@ function Admin() {
         }
     }, [logoutMutation, router, navigate]);
 
-    if (isLoading) return <div>Loading participants...</div>;
-    if (error) return <div>Error loading participants: {error.message}</div>;
+    if (isLoading) return <Spinner />;
+    if (error) return <ErrorAlert error={error} />;
 
     return (
         <>
@@ -48,8 +49,8 @@ function Admin() {
                 ))}
             </ul>
             <button
+                className="button"
                 type="button"
-                className="hover:underline"
                 onClick={handleLogout}
                 disabled={logoutMutation.isPending}
             >

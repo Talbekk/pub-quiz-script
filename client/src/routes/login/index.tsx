@@ -77,7 +77,11 @@ function LoginComponent() {
                             required
                         />
                     </div>
-                    <button type="submit" className={styles.loginButton}>
+                    <button
+                        type="submit"
+                        className="button"
+                        disabled={isLoggingIn}
+                    >
                         {isLoggingIn ? 'Loading...' : 'Login'}
                     </button>
                 </fieldset>
