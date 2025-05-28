@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
 import styles from './styles.module.scss';
+import { QuizzesTableRow } from '../QuizzesTableRow';
 
 export const QuizzesTable: FunctionComponent<{ quizzes: any[] }> = ({
     quizzes,
@@ -14,14 +15,7 @@ export const QuizzesTable: FunctionComponent<{ quizzes: any[] }> = ({
                     <th>Entries</th>
                 </tr>
                 {quizzes.map((quiz, index) => (
-                    <tr key={quiz.id}>
-                        <td>{index + 1}</td>
-                        <td>{quiz.start_datetime}</td>
-                        <td>
-                            <a href={`/quizzes/${quiz.id}`}>View Quiz</a>
-                        </td>
-                        <td>{quiz.entries.length}</td>
-                    </tr>
+                    <QuizzesTableRow key={quiz.id} quiz={quiz} index={index} />
                 ))}
             </table>
         </div>
