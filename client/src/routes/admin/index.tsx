@@ -1,10 +1,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { useFetchParticipants } from '../../hooks/useFetchParticipants';
 import { Spinner } from '../../components/Spinner';
 import { ErrorAlert } from '../../components/ErrorAlert';
-import { Quizzes } from '../../components/Quizzes';
+import { QuizzesTable } from '../../components/QuizzesTable';
 import { AdminHeader } from '../../components/AdminHeader';
 import styles from './styles.module.scss';
+import { useFetchQuizzes } from '../../hooks/useFetchQuizzes';
 
 export const Route = createFileRoute('/admin/')({
     beforeLoad: ({ context, location }) => {
@@ -22,15 +22,17 @@ export const Route = createFileRoute('/admin/')({
 
 function Admin() {
     const navigate = Route.useNavigate();
-    const { data, isLoading, error } = useFetchParticipants();
+    const { data, isLoading, error } = useFetchQuizzes();
 
     if (isLoading) return <Spinner />;
     if (error) return <ErrorAlert error={error} />;
+    if (!data) return null;
+    console.log(`data: `, data);
 
     return (
         <div className={styles.adminContainer}>
             <AdminHeader navigate={navigate} />
-            <Quizzes />
+            <QuizzesTable quizzes={data.data} />
         </div>
     );
 }
