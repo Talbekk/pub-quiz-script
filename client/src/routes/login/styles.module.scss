@@ -3,44 +3,5 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    .loginForm {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        .fieldset {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-
-            .inputGroup {
-                display: grid;
-                grid-template-columns: 25% 75%;
-                align-items: center;
-                width: 100%;
-
-                label {
-                    display: block;
-                    margin-bottom: 5px;
-                    font-weight: bold;
-                }
-
-                input {
-                    padding: 10px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    font-size: 1rem;
-                }
-            }
-        }
-    }
+    gap: 1rem;
 }

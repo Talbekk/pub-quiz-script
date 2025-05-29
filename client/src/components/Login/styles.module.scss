@@ -1,0 +1,38 @@
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .fieldset {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .inputGroup {
+            display: grid;
+            grid-template-columns: 75px 1fr;
+            align-items: center;
+            width: 100%;
+            gap: 1rem;
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 1rem;
+            }
+        }
+    }
+}
