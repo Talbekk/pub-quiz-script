@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
 import { QuizLink } from './components/QuizLink';
+import { QuizDate } from './components/QuizDate';
 
 interface QuizzesTableRowProps {
     quiz: any;
@@ -13,7 +14,7 @@ export const QuizzesTableRow: FunctionComponent<QuizzesTableRowProps> = ({
     return (
         <tr key={quiz.id}>
             <td>{index + 1}</td>
-            <td>{quiz.start_datetime}</td>
+            <QuizDate quiz={quiz} />
             <QuizLink quiz={quiz} />
             <td>{quiz.entries.length}</td>
         </tr>
