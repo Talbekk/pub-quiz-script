@@ -14,7 +14,25 @@ export const getPaginatedQuizzes = async (
             take,
         }),
     ]);
-    return { quizCount, quizzes };
+    const quizIds = quizzes.map((quiz) => quiz.id);
+    const entries = await prisma.entries.findMany({
+        where: {
+            quiz_ref: {
+                in: quizIds,
+            },
+        },
+    });
+    const updatedQuizzes = quizzes.map((quiz) => {
+        const quizEntries = entries.filter(
+            (entry) => entry.quiz_ref === quiz.id && entry.score !== null,
+        );
+
+        return {
+            ...quiz,
+            entries: quizEntries,
+        };
+    });
+    return { quizCount, quizzes: updatedQuizzes };
 };
 
 export const getQuizByID = async (quizid: string) => {
